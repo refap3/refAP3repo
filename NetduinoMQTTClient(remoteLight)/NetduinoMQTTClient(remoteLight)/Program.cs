@@ -22,6 +22,8 @@ namespace NetduinoMQTTClient_remoteLight_
         private static string lastXivelyData = "" ;
 
         private static OutputPort remoteLight = new OutputPort(Pins.GPIO_PIN_D11, false);
+        private static OutputPort debugLight = new OutputPort(Pins.ONBOARD_LED, false);
+
         private static AnalogInput voltagePort = new AnalogInput(Pins.GPIO_PIN_A1);
         private static OutputPort lowPort = new OutputPort(Pins.GPIO_PIN_A0, false);
         private static OutputPort highPort = new OutputPort(Pins.GPIO_PIN_A2, true);
@@ -72,6 +74,8 @@ namespace NetduinoMQTTClient_remoteLight_
             }
             Debug.Print("lm Sensiti " + voltagePort.Read());
             remoteLight.Write(light < voltagePort.Read());
+            debugLight.Write(remoteLight.Read());
+
         }
     }
 }
