@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetduinoMQTTClient(remoteLight)", "NetduinoMQTTClient(remoteLight)\NetduinoMQTTClient(remoteLight).csproj", "{EF420354-33E2-449A-9D05-38DEDC8C1657}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://lliissssaa.tfspreview.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = NetduinoMQTTClient(remoteLight)\\NetduinoMQTTClient(remoteLight).csproj
+		SccProjectName1 = NetduinoMQTTClient(remoteLight)
+		SccLocalPath1 = NetduinoMQTTClient(remoteLight)
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF420354-33E2-449A-9D05-38DEDC8C1657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF420354-33E2-449A-9D05-38DEDC8C1657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF420354-33E2-449A-9D05-38DEDC8C1657}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EF420354-33E2-449A-9D05-38DEDC8C1657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF420354-33E2-449A-9D05-38DEDC8C1657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF420354-33E2-449A-9D05-38DEDC8C1657}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

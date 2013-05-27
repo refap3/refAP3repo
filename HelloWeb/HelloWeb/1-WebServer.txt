@@ -1,0 +1,35 @@
+﻿using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading;
+using Microsoft.SPOT;
+using Microsoft.SPOT.Hardware;
+using SecretLabs.NETMF.Hardware;
+using SecretLabs.NETMF.Hardware.NetduinoPlus;
+
+
+using Gsiot.Server;
+
+namespace GSIOTDemo
+{
+    public class Program
+    {
+        public static void Main()
+        {
+
+            var webServer = new HttpServer
+            {
+                RelayDomain = "gsiot-bcjp-yj88",
+                RelaySecretKey = "HDMvyM11hAu6H6cxIaT50dL9ALWc81MYB8H/UFhV",
+                RequestRouting =
+                {
+                    { 
+                        "GET /hello", context =>  {context.SetResponse("Hello from Relay","text/plain");}
+                    }
+                }
+            };
+
+            webServer.Run();
+        }
+    }
+}
