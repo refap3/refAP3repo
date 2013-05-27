@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TDataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="TDataModelStoreContainer">
+          <EntitySet Name="TData" EntityType="TDataModel.Store.TData" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="TData">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="fromKTO" Type="int" Nullable="false" />
+          <Property Name="toKTO" Type="int" Nullable="false" />
+          <Property Name="amnt" Type="decimal" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="Transacto" Type="image" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TDataModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="TDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TDataItems" EntityType="TDataModel.TDataItem" />
+        </EntityContainer>
+        <EntityType Name="TDataItem">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="lightSENS" Type="Int32" Nullable="false" />
+          <Property Name="humSENS" Type="Int32" Nullable="false" />
+          <Property Name="tempSENS" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
+          <Property Name="Transacto" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TDataModelStoreContainer" CdmEntityContainer="TDataEntities">
+          <EntitySetMapping Name="TDataItems"><EntityTypeMapping TypeName="TDataModel.TDataItem"><MappingFragment StoreEntitySet="TData">
+            <ScalarProperty Name="ID" ColumnName="ID" />
+            <ScalarProperty Name="lightSENS" ColumnName="fromKTO" />
+            <ScalarProperty Name="humSENS" ColumnName="toKTO" />
+            <ScalarProperty Name="tempSENS" ColumnName="amnt" />
+            <ScalarProperty Name="Date" ColumnName="Date" />
+            <ScalarProperty Name="Transacto" ColumnName="Transacto" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="TransactDataModel">
+        <EntityTypeShape EntityType="TDataModel.TDataItem" Width="1.5" PointX="0.75" PointY="0.75" Height="1.9210009765625" IsExpanded="true" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
