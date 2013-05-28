@@ -23,6 +23,7 @@ namespace NetduinoMQTTClient_remoteLight_
 
         private static OutputPort remoteLight = new OutputPort(Pins.GPIO_PIN_D11, false);
         private static OutputPort debugLight = new OutputPort(Pins.ONBOARD_LED, false);
+        private static OutputPort watchDogLight = new OutputPort(Pins.GPIO_PIN_D9, false);
 
         private static AnalogInput voltagePort = new AnalogInput(Pins.GPIO_PIN_A1);
         private static OutputPort lowPort = new OutputPort(Pins.GPIO_PIN_A0, false);
@@ -36,6 +37,12 @@ namespace NetduinoMQTTClient_remoteLight_
             ConnectSubscribe(APIKEY, FEEDID);
 
             voltagePort.SetRange(0, 9999); // set lumen sensitivity range 
+
+            while (true)
+            {
+                watchDogLight.Write(!watchDogLight.Read());
+                Thread.Sleep(800);
+            }
         }
 
         private static void ConnectSubscribe(string APIKEY, string FEEDID)
