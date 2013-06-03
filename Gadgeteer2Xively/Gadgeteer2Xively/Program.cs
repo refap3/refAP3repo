@@ -51,6 +51,8 @@ namespace Gadgeteer2Xively
         {
             //run upload to Xivley
             xyvStatus = SubmitToXively(tempMeas, humMeas, lightMeas);
+            if (xyvStatus == "200") multicolorLed.BlinkOnce(GT.Color.Orange, new TimeSpan(0, 0, 5), GT.Color.Green);
+            else multicolorLed.BlinkOnce(GT.Color.Red, new TimeSpan(0, 0, 1), GT.Color.Green); 
         }
 
         void temperatureHumidity_MeasurementComplete(TemperatureHumidity sender, double temperature, double relativeHumidity)
