@@ -23,24 +23,22 @@ namespace Gadgeteer2Xively
         static double humMeas;
         static double lightMeas;
         string xyvStatus;
-        static double countDown = 0;
-        static GT.Timer timer;
+        static double countDown = 0; 
 
 
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
         {
             Debug.Print("Program Started");
-            multicolorLed.BlinkRepeatedly(GT.Color.Blue);
+            multicolorLed.TurnBlue();
             ethernet_J11D.NetworkUp += new GTM.Module.NetworkModule.NetworkEventHandler(ethernet_J11D_NetworkUp);
-            // removed NW down handler 
-            //ethernet_J11D.NetworkDown += new GTM.Module.NetworkModule.NetworkEventHandler(ethernet_J11D_NetworkDown);
+            ethernet_J11D.NetworkDown += new GTM.Module.NetworkModule.NetworkEventHandler(ethernet_J11D_NetworkDown);
             temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
             ethernet_J11D.UseDHCP();
-            timer = new GT.Timer(1000);
-            timer.Tick += new GT.Timer.TickEventHandler(timer_Tick); // timer will be started after NW up 
+            var timer = new GT.Timer(1000);
+            timer.Tick += new GT.Timer.TickEventHandler(timer_Tick);
+            timer.Start();
             button.ButtonPressed += new Button.ButtonEventHandler(button_ButtonPressed);
-            
         }
 
         void button_ButtonPressed(Button sender, Button.ButtonState state)
@@ -51,21 +49,10 @@ namespace Gadgeteer2Xively
 
         private void ExecuteMeasurementCycle()
         {
-            //run in seperate Thread since this sometimes hangs in request.getstream ...
-            //
-
-                var t = new Thread(ExecuteMeasurementCycleInSeperateThread);
-                t.Start();  
-        }
-
-        private void ExecuteMeasurementCycleInSeperateThread()
-        {
             //run upload to Xivley
-            Debug.Print("About to submit to Xively ...");
             xyvStatus = SubmitToXively(tempMeas, humMeas, lightMeas);
-            Debug.Print("Xivley returned; " + xyvStatus);
             if (xyvStatus == "200") multicolorLed.BlinkOnce(GT.Color.Orange, new TimeSpan(0, 0, 5), GT.Color.Green);
-            else multicolorLed.BlinkOnce(GT.Color.Red, new TimeSpan(0, 0, 1), GT.Color.Green);
+            else multicolorLed.BlinkOnce(GT.Color.Red, new TimeSpan(0, 0, 1), GT.Color.Green); 
         }
 
         void temperatureHumidity_MeasurementComplete(TemperatureHumidity sender, double temperature, double relativeHumidity)
@@ -97,19 +84,17 @@ namespace Gadgeteer2Xively
 
         }
 
-        //void ethernet_J11D_NetworkDown(GTM.Module.NetworkModule sender, GTM.Module.NetworkModule.NetworkState state)
-        //{
-        //    multicolorLed.TurnRed();
-        //}
+        void ethernet_J11D_NetworkDown(GTM.Module.NetworkModule sender, GTM.Module.NetworkModule.NetworkState state)
+        {
+            multicolorLed.TurnRed();
+        }
 
         void ethernet_J11D_NetworkUp(GTM.Module.NetworkModule sender, GTM.Module.NetworkModule.NetworkState state)
         {
-            // wait for NW to settle ...
-            Thread.Sleep(2500);
             multicolorLed.TurnGreen();
             ClearDisplay();
-            // start timer after NW up ...
-            timer.Start();
+
+
         }
 
         //display stuff ...
