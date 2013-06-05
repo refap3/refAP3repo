@@ -38,6 +38,13 @@ namespace NetduinoMQTTClient_remoteLight_
 
             voltagePort.SetRange(0, 9999); // set lumen sensitivity range 
 
+            //run watchdog on seperate thread ...
+            var t = new Thread(DoWatchDogLight);
+            t.Start();
+        }
+
+        private static void DoWatchDogLight()
+        {
             while (true)
             {
                 watchDogLight.Write(!watchDogLight.Read());
@@ -64,10 +71,12 @@ namespace NetduinoMQTTClient_remoteLight_
             string msg = new string(Encoding.UTF8.GetChars(e.Message));
             lastXivelyData=(msg.Split('\n')[1].Split(',')[2]); // in this case take 2nd datapoint and get value
             Debug.Print("xive: " + lastXivelyData);
-            ActionForXivelyData(lastXivelyData); 
+            // since this repeatedly hangs try it on a new thread ....
+            var t = new Thread(ActionForXivelyData);
+            t.Start();
         }
 
-        private static void ActionForXivelyData(string lastXivelyData)
+        private static void ActionForXivelyData()
         {
             // do whatever you like with the new data, i.e. turn light on or off 
             int light = 0;
