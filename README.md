@@ -14,6 +14,7 @@ m2qtt-20148: mqtt library to talk to XIvely
 NetduinoMQTTClient(remoteLight): mqtt client to activate renote light based on Gadgeteer2Xively light sensor reading 
 NetduinoPlusApplication1with real IO: real I/O Ports usage on ND+
 ThingSpeak: ND analog reader to ThingSpeeak and TWITTER
+XivlyClinet: Windows Store App to read from Xively
 XivlyTester: Windows Form App for Xively tests
 
 
