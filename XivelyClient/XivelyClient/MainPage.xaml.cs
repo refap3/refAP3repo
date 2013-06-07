@@ -14,6 +14,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
+
+
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234237
 
@@ -24,6 +28,9 @@ namespace XivelyClient
     /// </summary>
     public sealed partial class MainPage : XivelyClient.Common.LayoutAwarePage
     {
+        TileNotification notification;
+        TileUpdater updater;
+        XmlNodeList tileLines;
         public MainPage()
         {
             this.InitializeComponent();
@@ -39,6 +46,18 @@ namespace XivelyClient
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            //Tile test ...
+            var tileContent = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquareBlock);
+             tileLines = tileContent.SelectNodes("tile/visual/binding/text");
+            tileLines[0].InnerText = inputBox.Text.Substring(0,2);
+
+
+            notification = new TileNotification(tileContent);
+
+            updater = TileUpdateManager.CreateTileUpdaterForApplication();
+            //updater.EnableNotificationQueue(true);
+
+
             MakeRequests(inputBox.Text);
             xivelyOutput.Text = "Requested " + inputBox.Text + " from Xively at " + "" + DateTime.Now.ToString("hh:mm:ss");
         }
@@ -60,13 +79,15 @@ namespace XivelyClient
                 xivelyOutput.Text = new string(responseAsChar, 0, count).Split(',')[1]; // hack out the value !
 
 
+                tileLines[1].InnerText = xivelyOutput.Text;
+                updater.Update(notification);
 
 
             }
 
             catch (Exception xxx)
             {
-                xivelyOutput.Text = "BAD! " +  xxx.ToString();
+                xivelyOutput.Text = "BAD! " + xxx.ToString();
 
             }
 
