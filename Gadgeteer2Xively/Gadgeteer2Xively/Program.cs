@@ -22,6 +22,8 @@ namespace Gadgeteer2Xively
         static double tempMeas;
         static double humMeas;
         static double lightMeas;
+        static double compassAngleMeas;
+        static double barometerMeas; 
         string xyvStatus;
         static double countDown = 0;
         static GT.Timer timer;
@@ -36,11 +38,28 @@ namespace Gadgeteer2Xively
             // removed NW down handler 
             //ethernet_J11D.NetworkDown += new GTM.Module.NetworkModule.NetworkEventHandler(ethernet_J11D_NetworkDown);
             temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
+            barometer.MeasurementComplete += new Barometer.MeasurementCompleteEventHandler(barometer_MeasurementComplete);
+            barometer.ContinuousMeasurementInterval = new TimeSpan(0, 0, 0, 0, 500);
+            barometer.StartContinuousMeasurements();
+            compass.MeasurementComplete += new Compass.MeasurementCompleteEventHandler(compass_MeasurementComplete);
+            compass.ContinuousMeasurementInterval = new TimeSpan(0, 0, 0, 0, 500);
+            compass.StartContinuousMeasurements();
+
             ethernet_J11D.UseDHCP();
             timer = new GT.Timer(1000);
             timer.Tick += new GT.Timer.TickEventHandler(timer_Tick); // timer will be started after NW up 
             button.ButtonPressed += new Button.ButtonEventHandler(button_ButtonPressed);
             
+        }
+
+        void compass_MeasurementComplete(Compass sender, Compass.SensorData sensorData)
+        {
+            compassAngleMeas = sensorData.Angle; 
+        }
+
+        void barometer_MeasurementComplete(Barometer sender, Barometer.SensorData sensorData)
+        {
+            barometerMeas = sensorData.Pressure; 
         }
 
         void button_ButtonPressed(Button sender, Button.ButtonState state)
@@ -62,7 +81,7 @@ namespace Gadgeteer2Xively
         {
             //run upload to Xivley
             Debug.Print("About to submit to Xively ...");
-            xyvStatus = SubmitToXively(tempMeas, humMeas, lightMeas);
+            xyvStatus = SubmitToXively(tempMeas, humMeas, lightMeas, compassAngleMeas , barometerMeas );
             Debug.Print("Xivley returned; " + xyvStatus);
             if (xyvStatus == "200") multicolorLed.BlinkOnce(GT.Color.Orange, new TimeSpan(0, 0, 5), GT.Color.Green);
             else multicolorLed.BlinkOnce(GT.Color.Red, new TimeSpan(0, 0, 1), GT.Color.Green);
@@ -92,7 +111,7 @@ namespace Gadgeteer2Xively
         {
             ClearDisplay();
             DisplayText(2, "Last Xyve: " + xyvStatus);
-            DisplayText(3, "T: " + tempMeas.ToString("F2") + " H: " + humMeas.ToString("F2") + " L: " + lightMeas.ToString("F2"));
+            DisplayText(3, "T: " + tempMeas.ToString("F2") + " H: " + humMeas.ToString("F2") + " L: " + lightMeas.ToString("F2") + " C: " + compassAngleMeas.ToString("F2") + " P: " + barometerMeas.ToString("F2"));
             DisplayText(4, "Pot: " + (potentiometer.ReadPotentiometerPercentage() * 100).ToString("F2") + " Countdown: " + countDown.ToString("F2"));
 
         }
@@ -138,7 +157,7 @@ namespace Gadgeteer2Xively
             display_TE35.SimpleGraphics.DisplayText(displText, Resources.GetFont(Resources.FontResources.NinaB), GT.Color.Red, 10, y);
         }
 
-        private  string  SubmitToXively(double tempMeas, double humMeas, double lightMeas)
+        private  string  SubmitToXively(double tempMeas, double humMeas, double lightMeas, double angleMeas, double pressMeas)
         {
 
             const string NEWLINE = "\n";
@@ -147,7 +166,7 @@ namespace Gadgeteer2Xively
             const string APIENDPOINT = "http://api.xively.com/v2/feeds/1934589243";
 
             // deliver the  measurements to xively
-            string result = "Humidity, " + humMeas.ToString("F2") + NEWLINE + "  Light, " + lightMeas.ToString("F2") + NEWLINE + "  Temperature, " + tempMeas.ToString("F2");
+            string result = "Humidity, " + humMeas.ToString("F2") + NEWLINE + "  Light, " + lightMeas.ToString("F2") + NEWLINE + "  Temperature, " + tempMeas.ToString("F2") + NEWLINE + "  Compass, " + angleMeas.ToString("F2") + NEWLINE + "  Pressure, " + pressMeas.ToString("F2");
 
             byte[] bytes = Encoding.UTF8.GetBytes(result);
             string strRequestUri = APIENDPOINT + ".csv";
