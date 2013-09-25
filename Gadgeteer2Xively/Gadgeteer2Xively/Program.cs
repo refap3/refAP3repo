@@ -168,7 +168,7 @@ namespace Gadgeteer2Xively
             const string APIENDPOINT = "http://api.xively.com/v2/feeds/1934589243";
 
             // deliver the  measurements to xively
-            string result = "Humidity, " + humMeas.ToString("F2") + NEWLINE + "  Light, " + lightMeas.ToString("F2") + NEWLINE + "  Temperature, " + tempMeas.ToString("F2") + NEWLINE + "  Compass, " + angleMeas.ToString("F2") + NEWLINE + "  Pressure, " + pressMeas.ToString("F2") + "Potentiometer, " + potentiometerMeas.ToString("F2") ;
+            string result = "Humidity, " + humMeas.ToString("F2") + NEWLINE + "  Light, " + lightMeas.ToString("F2") + NEWLINE + "  Temperature, " + tempMeas.ToString("F2") + NEWLINE + "  Compass, " + angleMeas.ToString("F2") + NEWLINE + "  Pressure, " + pressMeas.ToString("F2") + NEWLINE + "Potentiometer, " + potentiometerMeas.ToString("F2") ;
 
             byte[] bytes = Encoding.UTF8.GetBytes(result);
             string strRequestUri = APIENDPOINT + ".csv";
