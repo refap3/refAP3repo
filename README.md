@@ -17,5 +17,7 @@
   * **XivlyClinet**: Windows Store App to read from Xively  
   * **XivlyTester**: Windows Form App for Xively tests  
   * **XivelyConsoleClient**: NEW Windows Console App super simple client with LOCATION support ....   
+  * **CerbotBalanceBotCombined**: Balancing Cerbot combined with the factory test 
+  * **CerbotFactoryTest**: More or less Original FACTORY Test Prog for Cerbot (edge detection)
 
 
