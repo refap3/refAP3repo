@@ -14,6 +14,10 @@ using Gsiot.Server;
 //read sensor values 
 //change actuators ....
 
+//download stuff from here: http://www.gsiot.info/download/
+//specifically the GSIOT.Server dll (referenced here )
+
+
 
 
 namespace GSIOTSampleFW4._2
@@ -24,6 +28,7 @@ namespace GSIOTSampleFW4._2
         static OutputPort led = new OutputPort(Pins.ONBOARD_LED, false);
 
         static OutputPort light = new OutputPort(Pins.GPIO_PIN_D13, false);
+        static bool lOn = false; //keep the state in a static since reley usqage gives false read outs !!
 
         static OutputPort lowPort = new OutputPort(Pins.GPIO_PIN_A0, false);
         static AnalogInput voltagePort = new AnalogInput(Cpu.AnalogChannel.ANALOG_1);
@@ -57,7 +62,7 @@ namespace GSIOTSampleFW4._2
             {
                 Thread.Sleep(2000);
                 led.Write(!led.Read());
-                Debug.Print(voltagePort.Read().ToString());
+                //Debug.Print(voltagePort.Read().ToString());
             }
         }
 
@@ -93,8 +98,10 @@ namespace GSIOTSampleFW4._2
         }
         static void HandleToggle(RequestHandlerContext context)
         {
-            light.Write(!light.Read());
-            string s = "<h1>Toggle " + DateTime.Now.ToString();
+
+
+            light.Write(!lOn); lOn = !lOn;
+            string s = "<h1>Toggle -- was on: " +(!lOn).ToString() + " " + DateTime.Now.ToString();
 
             context.SetResponse(s, "text/html");
         }        
