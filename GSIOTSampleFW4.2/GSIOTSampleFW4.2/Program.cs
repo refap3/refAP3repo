@@ -50,6 +50,10 @@ namespace GSIOTSampleFW4._2
             webServer.RequestRouting.Add("GET /temp", HandleTemp);
             webServer.RequestRouting.Add("GET /on", HandleOn);
             webServer.RequestRouting.Add("GET /off", HandleOff);
+            // allow on off to send via POST (xively) ...
+            webServer.RequestRouting.Add("POST /on", HandlePostOn);
+            webServer.RequestRouting.Add("POST /off", HandlePostOff);
+            
             webServer.RequestRouting.Add("GET /toggle", HandleToggle); 
             webServer.Run();
 
@@ -84,26 +88,44 @@ namespace GSIOTSampleFW4._2
 
         static void HandleOn(RequestHandlerContext context)
         {
-            light.Write(true);
+            lightWrite(true);
             string s = "<h1>ON " + DateTime.Now.ToString(); 
 
             context.SetResponse(s, "text/html");
         }
         static void HandleOff(RequestHandlerContext context)
         {
-            light.Write(false);
+            lightWrite(false);
             string s = "<h1>OFF " + DateTime.Now.ToString(); 
 
             context.SetResponse(s, "text/html");
         }
+        static void HandlePostOn(RequestHandlerContext context)
+        {
+            context.ResponseStatusCode = 200;
+            lightWrite(true);
+        }
+
+        static void HandlePostOff(RequestHandlerContext context)
+        {
+            context.ResponseStatusCode = 200;
+            lightWrite(false);
+        }
+        
+        
         static void HandleToggle(RequestHandlerContext context)
         {
 
 
-            light.Write(!lOn); lOn = !lOn;
+            lightWrite(!lOn); 
             string s = "<h1>Toggle -- was on: " +(!lOn).ToString() + " " + DateTime.Now.ToString();
 
             context.SetResponse(s, "text/html");
+        }
+
+        private static void lightWrite(bool p)
+        {
+            light.Write(p); lOn = p;
         }        
 
     }
