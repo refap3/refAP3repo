@@ -43,10 +43,14 @@ while True:
         print ("Temp: %.2f, Hum: %.2f, Light: %d, Sound: %d" %(t,h,light_intensity/10,last_sound))
 
 
+        # get seconds part of time 
+        ts = time.time()
+        sec = datetime.datetime.fromtimestamp(ts).strftime('%S')
+
         # dump values to LCD 
         setRGB(0,128,64)
         setRGB(0,255,0)
-        setText("T:%.2f H:%.2f\nL:%d    S:%d" %(t,h,light_intensity/10,last_sound))
+        setText("T:%.2f H:%.2f\nL:%d   S:%d %ss" %(t,h,light_intensity/10,last_sound,sec))
 
         time.sleep(3)
     except IOError:

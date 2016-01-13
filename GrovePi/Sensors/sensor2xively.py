@@ -42,8 +42,6 @@ light_sensor = 1        # port A1
 temperature_sensor = 4  # port D4
 led = 3                 # port D3
 
-ts = time.time()
-st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 grovepi.pinMode(led,"OUTPUT")
 
 last_sound = 0
@@ -85,10 +83,15 @@ while True:
         if sound_level > 0:
             last_sound = sound_level
 
+        # get seconds part of time 
+        ts = time.time()
+        sec = datetime.datetime.fromtimestamp(ts).strftime('%S')
+
+
         # dump values to LCD 
         setRGB(0,128,64)
         setRGB(0,255,0)
-        setText("T:%.2f H:%.2f\nL:%d    S:%d" %(t,h,light_intensity/10,last_sound))
+        setText("T:%.2f H:%.2f\nL:%d   S:%d %ss" %(t,h,light_intensity/10,last_sound,sec))
 
         dsTEMP.current_value = t
         dsTEMP.at = datetime.datetime.utcnow()
