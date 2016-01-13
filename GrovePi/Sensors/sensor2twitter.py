@@ -43,6 +43,8 @@ while True:
         # Get value from temperature sensor
         [temp,humidity] = grovepi.dht(temperature_sensor,0)
         t=temp
+        h=humidity
+
 
         # Get value from light sensor
         light_intensity = grovepi.analogRead(light_sensor)
@@ -56,8 +58,8 @@ while True:
             last_sound = sound_level
 
         # Post a tweet
-        print ("Temp: %.2f, Light: %d, Sound: %d" %(t,light_intensity/10,last_sound))
-        api.update_status("Temp: %.2f, Light: %d, Sound: %d" %(t,light_intensity/10,last_sound))
+        print            ("Temp: %.2f, Hum: %.2f, Light: %d, Sound: %d" %(t,h,light_intensity/10,last_sound))
+        api.update_status("Temp: %.2f, Hum: %.2f, Light: %d, Sound: %d" %(t,h,light_intensity/10,last_sound))
         time.sleep(180)
     except IOError:
         print "Error"
