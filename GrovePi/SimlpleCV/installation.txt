@@ -13,13 +13,33 @@ python
 ...
 
 #Additional Steps for the Raspberry Pi Camera Module
+# BE SURE TO enable raspi-camera in raspi-config!!
 
-wget http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc
-sudo apt-key add ./lrkey.asc
+#To install UV4L open a terminal and type the following commands:
+curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | sudo apt-key add -
+#Add the following line to the file /etc/apt/sources.list :
+deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main
+
+sudo apt-get update
+sudo apt-get install uv4l uv4l-raspicam
+
+sudo apt-get install uv4l-raspicam-extras
+
 sudo reboot
- 
+
+# to restart the camera: 
+sudo service uv4l_raspicam restart
+
  
  At the time of writing this, the driver is under development and not all things will work as expected. The remainder of this chapter uses a USB webcam, but if you use the Raspberry Pi Camera Module, you may need to replace the lines that read 
  
  myCamera = Camera(prop_set={'width': 320, 'height': 240}) with 
  myCamera = Camera(0)
+ 
+# test needs X environment (via rdp)
+
+# raspicam blues 
+# install UV4L driver 
+
+pkill uv4l
+uv4l --driver raspicam --auto-video_nr --encoding yuv420 --nopreview
