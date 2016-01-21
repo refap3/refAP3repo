@@ -13,6 +13,8 @@ from grovepi import *
 # Connect the Grove Ultrasonic Ranger to digital port D7
 ultrasonic_ranger = 7
 trigger = 1000  # trigger distance in cm  i.e. ALWAYS rely on face detection 
+buzzer_pin=2 # connect buzzer here - will confirm BUGGERS face detected
+pinMode(buzzer_pin,"OUTPUT")
 
 # Consumer keys and access tokens, used for OAuth  
 # NEW account - NOT itirockz any more !
@@ -35,7 +37,7 @@ print "Twitter Connected"
 
 from SimpleCV import Camera, Display, DrawingLayer, Color
 
-myCamera=Camera(0)
+myCamera=Camera(0,  {"width":1024, "height":768})
 
 while True:
 	try:
@@ -61,7 +63,7 @@ while True:
 						print "Photo Size: " + photo + " " + str(psize)
 						myDL=DrawingLayer((myFace.width,myFace.height))
 						myDL.setFontSize(25)
-						myDL.text("BUGGER",(myFace.width/2 -20,10),color=Color.WHITE)
+						myDL.text("BUGGER " + str(psize//1024),(myFace.width/2 -20,10),color=Color.WHITE)
 						myFace.addDrawingLayer(myDL)
 						myFace.applyLayers()
 						
@@ -70,14 +72,22 @@ while True:
 						status = 'OMG I have seen a buggers face! ' + now
 						# tweet ...
 						api.update_with_media(photo, status=status)
+						digitalWrite(buzzer_pin,1)
+						time.sleep(0.1)
+						digitalWrite(buzzer_pin,0)
 					else:
 						print "Faced skipped too small: " + str(psize)
 
 				print 'Sleep before next watch cycle ...'
-				time.sleep(2) # sleep before next check 
 		else:
 			print 'No Alarm ', distant,'cm'
-			time.sleep(1)
+			
+		time.sleep(1)
+		
+	except KeyboardInterrupt:
+		print 'DONE looking for buggers ...'
+		digitalWrite(buzzer_pin,0)
+		break
 	except TypeError:
 		print "Error"
 	except IOError:
