@@ -7,14 +7,26 @@ import subprocess
 import tweepy 
 
 from grovepi import *
+from grove_rgb_lcd import *
 
 
 
 # Connect the Grove Ultrasonic Ranger to digital port D7
 ultrasonic_ranger = 7
-trigger = 1000  # trigger distance in cm  i.e. ALWAYS rely on face detection 
+trigger = 50  # trigger distance in cm  -- will be overridden later 
 buzzer_pin=2 # connect buzzer here - will confirm BUGGERS face detected
 pinMode(buzzer_pin,"OUTPUT")
+# connect red LED to D5 -- will turn on iff object within alarm distance
+led=5
+pinMode(led,"OUTPUT")
+
+# connect rotary angle sensor to A0 -- this will govern sensitity range is 0 to 1023
+pot=0
+# connect green LED to D8 -- will signal trigger distance 
+trled=8
+pinMode(trled,"OUTPUT")
+# connect the LCD display to any of the IC2 ports
+
 
 # Consumer keys and access tokens, used for OAuth  
 # NEW account - NOT itirockz any more !
@@ -40,58 +52,71 @@ from SimpleCV import Camera, Display, DrawingLayer, Color
 myCamera=Camera(0,  {"width":1024, "height":768})
 
 while True:
-	try:
-		# Read distance value from Ultrasonic
-		distant = ultrasonicRead(ultrasonic_ranger)
-		if distant <= trigger:
-			print 'Alarm ', distant,'cm'
+    try:
+        setRGB(0,128,64)
+        setRGB(0,255,0)
+        # Read distance value from Ultrasonic
+        distant = ultrasonicRead(ultrasonic_ranger)
+        # read potentiometer for trigger
+        rawtrigger = analogRead (pot) 
+        trigger=rawtrigger/10.0
+        analogWrite(trled,rawtrigger/4)
+        if distant <= trigger:
+#            print 'Alarm ', distant,'cm', 'trigger', trigger
+            setText('Alarm ' + str(distant) + ' cm' + ' trigger ' + str(trigger))
+            analogWrite(led,255)
 
-			frame=myCamera.getImage()
-			faces=frame.findHaarFeatures('face')
-			if faces:
-				fct=0
-				ts = time.time()
-				now = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
+            frame=myCamera.getImage()
+            faces=frame.findHaarFeatures('face')
+            if faces:
+                fct=0
+                ts = time.time()
+                now = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
 
-				for face in faces:
-					fct+=1
-					print "face " + str(fct) + " at: " + str(face.coordinates())
-					myFace=face.crop()  # tweet all faces ...
-					photo='/home/pi/tmp/' + now + 'F-' + str(fct) + '.jpg' # NOTE MUST use absolute path here!
-					psize=myFace.width*myFace.height 
-					if psize>20000: #looks like smaller images are thrash 
-						print "Photo Size: " + photo + " " + str(psize)
-						myDL=DrawingLayer((myFace.width,myFace.height))
-						myDL.setFontSize(25)
-						myDL.text("BUGGER " + str(psize//1024),(myFace.width/2 -20,10),color=Color.WHITE)
-						myFace.addDrawingLayer(myDL)
-						myFace.applyLayers()
-						
-						myFace.save(photo)
-						time.sleep(1) # wait save complete ...
-						status = 'OMG I have seen a buggers face! ' + now
-						# tweet ...
-						api.update_with_media(photo, status=status)
-						digitalWrite(buzzer_pin,1)
-						time.sleep(0.1)
-						digitalWrite(buzzer_pin,0)
-					else:
-						print "Faced skipped too small: " + str(psize)
+                for face in faces:
+                    fct+=1
+                    print "face " + str(fct) + " at: " + str(face.coordinates())
+                    myFace=face.crop()  # tweet all faces ...
+                    photo='/home/pi/tmp/' + now + 'F-' + str(fct) + '.jpg' # NOTE MUST use absolute path here!
+                    psize=myFace.width*myFace.height 
+                    if psize>20000: #looks like smaller images are thrash 
+                        print "Photo Size: " + photo + " " + str(psize)
+                        myDL=DrawingLayer((myFace.width,myFace.height))
+                        myDL.setFontSize(25)
+                        myDL.text("THIS is " + str(distant) + " cm NEAR me!",(myFace.width/2 - 140,10),color=Color.WHITE)
+                        myFace.addDrawingLayer(myDL)
+                        myFace.applyLayers()
+                        
+                        myFace.save(photo)
 
-				print 'Sleep before next watch cycle ...'
-		else:
-			print 'No Alarm ', distant,'cm'
-			
-		time.sleep(1)
-		
-	except KeyboardInterrupt:
-		print 'DONE looking for buggers ...'
-		digitalWrite(buzzer_pin,0)
-		break
-	except TypeError:
-		print "Error"
-	except IOError:
-		print "Error"
+                        digitalWrite(buzzer_pin,1)
+                        time.sleep(0.1)
+                        digitalWrite(buzzer_pin,0)
+
+                        time.sleep(1) # wait save complete ...
+                        status = 'OMG I have seen a buggers face! ' + now
+                        # tweet ...
+                        api.update_with_media(photo, status=status)
+                    else:
+                        print "Faced skipped too small: " + str(psize)
+
+                print 'Sleep before next watch cycle ...'
+        else:
+#            print 'No Alarm ', distant,'cm' , 'trigger', trigger
+            setText('NO Alarm ' + str(distant) + ' cm' + ' trigger ' + str(trigger))
+            
+            analogWrite(led,0)
+            
+        time.sleep(1)
+        
+    except KeyboardInterrupt:
+        print 'DONE looking for buggers ...'
+        digitalWrite(buzzer_pin,0)
+        break
+    except TypeError:
+        print "Error"
+    except IOError:
+        print "Error"
 
 
 
