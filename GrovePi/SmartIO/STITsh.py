@@ -54,10 +54,12 @@ IOT.subscribe()              							#starts the bi-directional communication
 #main loop: run as long as the device is turned on
 while True:
     try:
-        [temp, hum]=grovepi.dht(tempSENSOR,1)
+        [temp, hum]=grovepi.dht(tempSENSOR,0)
         print( "t=",temp," h=",hum)
         IOT.send(temp, tempSENSOR)
         sleep(1)
 
     except IOError:
+        print ""
+    except TypeError:
         print ""
