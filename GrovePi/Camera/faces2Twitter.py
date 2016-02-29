@@ -30,6 +30,8 @@ pinMode(buzzer_pin,"OUTPUT")
 # connect red LED to D5 -- will turn on iff object within alarm distance
 led=5
 pinMode(led,"OUTPUT")
+button=6
+pinMode(button,"OUTPUT")
 
 # connect the LCD display to any of the IC2 ports
 
@@ -51,6 +53,7 @@ now = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
 api.update_status("STIT face detection start at: " + now)
 
 print "Twitter Connected"
+print "Twitter Connected"
 beep(0.01)
 from SimpleCV import Camera, Display, DrawingLayer, Color
 
@@ -62,8 +65,9 @@ while True:
         setRGB(0,255,0)
         # Read distance value from Ultrasonic
         distant = ultrasonicRead(ultrasonic_ranger)
-        if distant <= trigger:
-            print 'Alarm ', distant,'cm', 'trigger', trigger
+        button_state=digitalRead(button)
+        if (distant <= trigger) or (button_state):
+#            print 'Alarm ', distant,'cm', 'trigger', trigger
             flushLCD('+++ ' + str(distant) + ':'  + str(trigger))
 
             analogWrite(led,255)
@@ -80,6 +84,7 @@ while True:
             flushLCD('processing ...')
             faces=frame.findHaarFeatures('face')
             if faces:
+                print str(len(faces)) + " faces"
                 fct=0
                 ts = time.time()
                 now = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
@@ -113,12 +118,12 @@ while True:
                         print "Face skipped too small: " + str(psize)
                         logLCD("Face " + str(fct) + " skipped too small: " + str(psize))
 
-                print 'Sleep before next watch cycle ...'
+#                print 'Sleep before next watch cycle ...'
             else:
                 logLCD('NO faces detected!')
                 
         else:
-            print 'No Alarm ', distant,'cm' , 'trigger', trigger
+#            print 'No Alarm ', distant,'cm' , 'trigger', trigger
             flushLCD('--- ' + str(distant) + ':'  + str(trigger))
             analogWrite(led,0)
             
