@@ -1,6 +1,6 @@
 #!/usr/bin/python 
 
-# detect bugger face and tweet  
+# detect STIT faces and tweet  
 import datetime 
 import time
 import subprocess
@@ -9,24 +9,29 @@ import tweepy
 from grovepi import *
 from grove_rgb_lcd import *
 
+def beep(duration):
+    digitalWrite(buzzer_pin,1)
+    time.sleep(duration)
+    digitalWrite(buzzer_pin,0)
+    
+def logLCD(status):
+    flushLCD(status)
+    time.sleep(1)
+    
+def flushLCD(status):
+    setText(status)
 
 
 # Connect the Grove Ultrasonic Ranger to digital port D7
 ultrasonic_ranger = 7
 trigger = 50  # trigger distance in cm  -- will be overridden later 
-buzzer_pin=2 # connect buzzer here - will confirm BUGGERS face detected
+buzzer_pin=2 # connect buzzer here - will confirm face detected
 pinMode(buzzer_pin,"OUTPUT")
 # connect red LED to D5 -- will turn on iff object within alarm distance
 led=5
 pinMode(led,"OUTPUT")
 
-# connect rotary angle sensor to A0 -- this will govern sensitity range is 0 to 1023
-pot=0
-# connect green LED to D8 -- will signal trigger distance 
-trled=8
-pinMode(trled,"OUTPUT")
 # connect the LCD display to any of the IC2 ports
-
 
 # Consumer keys and access tokens, used for OAuth  
 # NEW account - NOT itirockz any more !
@@ -43,10 +48,10 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth) 
 ts = time.time()
 now = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
-api.update_status("Bugger face detection start at: " + now)
+api.update_status("STIT face detection start at: " + now)
 
 print "Twitter Connected"
-
+beep(0.01)
 from SimpleCV import Camera, Display, DrawingLayer, Color
 
 myCamera=Camera(0,  {"width":1024, "height":768})
@@ -57,16 +62,22 @@ while True:
         setRGB(0,255,0)
         # Read distance value from Ultrasonic
         distant = ultrasonicRead(ultrasonic_ranger)
-        # read potentiometer for trigger
-        rawtrigger = analogRead (pot) 
-        trigger=rawtrigger/10.0
-        analogWrite(trled,rawtrigger/4)
         if distant <= trigger:
-#            print 'Alarm ', distant,'cm', 'trigger', trigger
-            setText('Alarm ' + str(distant) + ' cm' + ' trigger ' + str(trigger))
-            analogWrite(led,255)
+            print 'Alarm ', distant,'cm', 'trigger', trigger
+            flushLCD('+++ ' + str(distant) + ':'  + str(trigger))
 
+            analogWrite(led,255)
+            # count down for photo !
+            flushLCD('SMILE!')
+            beep (0.01)
+            time.sleep (1)
+            beep (0.02)
+            time.sleep(1)
+            beep (0.1)
+            time.sleep (1)
+            
             frame=myCamera.getImage()
+            flushLCD('processing ...')
             faces=frame.findHaarFeatures('face')
             if faces:
                 fct=0
@@ -83,34 +94,38 @@ while True:
                         print "Photo Size: " + photo + " " + str(psize)
                         myDL=DrawingLayer((myFace.width,myFace.height))
                         myDL.setFontSize(25)
-                        myDL.text("THIS is " + str(distant) + " cm NEAR me!",(myFace.width/2 - 140,10),color=Color.WHITE)
+                        myDL.text("I am " + str(distant) + " cm next to a PiCam!",(myFace.width/2 - 140,10),color=Color.WHITE)
                         myFace.addDrawingLayer(myDL)
                         myFace.applyLayers()
                         
                         myFace.save(photo)
-
-                        digitalWrite(buzzer_pin,1)
-                        time.sleep(0.1)
-                        digitalWrite(buzzer_pin,0)
+                        beep (0.05)
+                        time.sleep(0.3)
+                        beep(0.2)
 
                         time.sleep(1) # wait save complete ...
-                        status = 'OMG I have seen a buggers face! ' + now
+                        status = 'LOOK MA, I did the STIT! ' + now
                         # tweet ...
                         api.update_with_media(photo, status=status)
+                        logLCD('TWEETed!')
+
                     else:
-                        print "Faced skipped too small: " + str(psize)
+                        print "Face skipped too small: " + str(psize)
+                        logLCD("Face " + str(fct) + " skipped too small: " + str(psize))
 
                 print 'Sleep before next watch cycle ...'
+            else:
+                logLCD('NO faces detected!')
+                
         else:
-#            print 'No Alarm ', distant,'cm' , 'trigger', trigger
-            setText('NO Alarm ' + str(distant) + ' cm' + ' trigger ' + str(trigger))
-            
+            print 'No Alarm ', distant,'cm' , 'trigger', trigger
+            flushLCD('--- ' + str(distant) + ':'  + str(trigger))
             analogWrite(led,0)
             
         time.sleep(1)
         
     except KeyboardInterrupt:
-        print 'DONE looking for buggers ...'
+        print 'DONE looking for faces ...'
         digitalWrite(buzzer_pin,0)
         break
     except TypeError:
