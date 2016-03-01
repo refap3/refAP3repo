@@ -1,6 +1,10 @@
-#gh=cls & (alias | grep git ) & echo . & echo .  & echo use FIRST 4 digits of commit (gdi) & echo gdin -- diff only #filenames & echo glf fil -- show history for fil & echo glfp fil -- show FULL history for fil & echo gk fil -- show #graphical history for fil & echo .
+#use FIRST 4 digits of commit (gdi) 
+#gdin -- diff only #filenames 
+#glf fil -- show history for fil 
+#glfp fil -- show FULL history for fil 
+#gk fil -- show #graphical history for fil 
 #
-alias ghe=more ~/.bashrc 
+alias ghe='more ~/.bash_aliases '
 alias gs='git status'
 alias gi='git init '
 alias gcl='git clone '
