@@ -12,9 +12,9 @@ IOT.ClientId   = "itirockz"
 IOT.ClientKey  = "rcwenbi3ssg"
 
 # devices used: 
-lightRELAY=3
-heaterRELAY=4
-tempSENSOR=6
+lightRELAY=3    # connect relay to D3
+heaterRELAY=4   # connect relay to D4
+tempSENSOR=6    # connect temp sensor to D6
 
 #set up the pins
 grovepi.pinMode( tempSENSOR,"INPUT")
