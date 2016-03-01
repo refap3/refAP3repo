@@ -6,6 +6,9 @@
 
 ### following projects are here: 
 
+  * **PI_scripts**: .bash_aliases -- use for Git!!
+
+
   * **Gadgeteer2Lively**: environmental monitor with data to xively  
   * **GadgeteerDistributed**: measurements and photo uload to webserver and complete webserver code  
   * **GenerateWebRequestsWithFiddler2**: Windows Forms Client for tests with yler.org  
