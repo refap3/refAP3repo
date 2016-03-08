@@ -11,11 +11,13 @@ from grove_rgb_lcd import *
 from SimpleCV import Camera, Display, DrawingLayer, Color
 
 # GrovePi connections ...
-ultrasonic_ranger = 7
+ultrasonic_ranger = 7 #D7
 trigger = 50  # trigger distance in cm  
-buzzer_pin=2 # connect buzzer here - will confirm face detected
-led=5
-button=6
+buzzer_pin=2 # D2 connect buzzer here - will confirm face detected
+led=5 # D5 
+button=6 # D6 
+# LCD on any I2C Port 
+
 
 # T W I T T E R: 
 # Consumer keys and access tokens, used for OAuth  
