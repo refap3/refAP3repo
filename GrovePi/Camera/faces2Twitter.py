@@ -70,7 +70,7 @@ def loop():
             # Read distance value from Ultrasonic
             distant = ultrasonicRead(ultrasonic_ranger)
             button_state=digitalRead(button)
-            if (distant <= trigger) or (button_state):
+            if (distant <= trigger) and (button_state):
     #            print 'Alarm ', distant,'cm', 'trigger', trigger
                 flushLCD('+++ ' + str(distant) + ':'  + str(trigger))
 
