@@ -21,10 +21,19 @@ button=6 # D6
 
 # T W I T T E R: 
 # Consumer keys and access tokens, used for OAuth  
-consumer_key = 'x6ZHUvQFg2MudvbA5RCNHyPrs'  
-consumer_secret = 'VNzZqd9cXT03gSOaku6l2uNfj7JSVaYeRIv7yr4T2vCE1mTDIu'  
-access_token = '23412757-SSbIoMaqCuSyZRUQxp7jq1inhP7CQxYjHTQR3x1MG'  
-access_token_secret = 'Eqzrcbfose5mEn0i3TDQMwWWVnRfZZhVhaJNjMFLi0ZF1'  
+twa=1 # set this to 0 to use lecko account OTHERWISE itirockz is used !
+#--------------------------------------------------------------------------
+if (twa==0):
+    consumer_key = 'x6ZHUvQFg2MudvbA5RCNHyPrs'  
+    consumer_secret = 'VNzZqd9cXT03gSOaku6l2uNfj7JSVaYeRIv7yr4T2vCE1mTDIu'  
+    access_token = '23412757-SSbIoMaqCuSyZRUQxp7jq1inhP7CQxYjHTQR3x1MG'  
+    access_token_secret = 'Eqzrcbfose5mEn0i3TDQMwWWVnRfZZhVhaJNjMFLi0ZF1'  
+else:
+    consumer_key = 'qpsCnt3kZxKMu6H0giJaBxyzd'  
+    consumer_secret = 'yTX9WxGqX6mZYxVgSGPBCAchH4lvxaism8yBHP08uGvnOZNVBa'  
+    access_token = '1249046982-KZ8e86QyUfe9dRWmtVRTTvhUEUDReFrS1ODMfq9'  
+    access_token_secret = 'n9iyZ009L0RdRN030HtHgQiB0tsEClvOnAldzTqaV96JC'  
+    
 # OAuth process, using the keys and tokens  
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)  
 auth.set_access_token(access_token, access_token_secret)  
@@ -113,7 +122,7 @@ def loop():
                             beep(0.2)
 
                             time.sleep(1) # wait save complete ...
-                            status = 'LOOK MA, I did the STIT! ' + now
+                            status = 'Look Ma, I did the #studieninfotag ##FHburgenland just now: ' + now
                             # tweet ...
                             api.update_with_media(photo, status=status)
                             logLCD('TWEETed!')
