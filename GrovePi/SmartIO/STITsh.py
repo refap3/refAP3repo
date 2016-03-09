@@ -15,6 +15,7 @@ IOT.ClientKey  = "rcwenbi3ssg"
 lightRELAY=3    # connect relay to D3
 heaterRELAY=4   # connect relay to D4
 tempSENSOR=6    # connect temp sensor to D6
+humSENSOR=tempSENSOR+1 # FAKE humidity sensor 
 
 #set up the pins
 grovepi.pinMode( tempSENSOR,"INPUT")
@@ -47,6 +48,7 @@ def on_message( id, value ):
 IOT.on_message = on_message
 IOT.connect()
 IOT.addAsset(tempSENSOR, "tempSENSOR", "Temperature Sensor", False, "float")
+IOT.addAsset(humSENSOR, "humSENSOR", "Humidity Sensor", False, "float")
 IOT.addAsset( lightRELAY, "lightRELAY", "Light Switch", True, "boolean" )
 IOT.addAsset( heaterRELAY, "heaterRELAY", "Heater Switch", True, "boolean" )
 IOT.subscribe()              							#starts the bi-directional communication
@@ -57,6 +59,7 @@ while True:
         [temp, hum]=grovepi.dht(tempSENSOR,0)
         print( "t=",temp," h=",hum)
         IOT.send(temp, tempSENSOR)
+        IOT.send(hum, humSENSOR)
         sleep(1)
 
     except IOError:
