@@ -10,4 +10,5 @@
   omg this is so cool a all in ONE script (passes parameters, uses case and runs a section as sudo) !!
   * **camall.sh**: integrate 3 Camera modes in one script, switch between scenarios: RaspiTimeLapse, adafruit camera master & Android RaspiCamRemote
   * **.bash_aliases**: mostly aliases for GIT move this to ~ !!
+  * **authorized_keys**: md ~/.ssh and copy there !
   
