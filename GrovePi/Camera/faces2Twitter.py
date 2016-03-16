@@ -122,7 +122,7 @@ def loop():
                             beep(0.2)
 
                             time.sleep(1) # wait save complete ...
-                            status = 'Look Ma, I did the #studieninfotag ##FHburgenland just now: ' + now
+                            status = 'Look Ma, I did the #FHBinfotag #FHburgenland just now: ' + now
                             # tweet ...
                             api.update_with_media(photo, status=status)
                             logLCD('TWEETed!')
