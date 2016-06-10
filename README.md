@@ -4,6 +4,8 @@
 ### MLBC//KAVS repo
 ### read me hard
 
+### note twitter API keys for itiRockz regenerated!!
+
 ### following projects are here: 
 
   * **PI_scripts**: .bash_aliases -- use for Git!!
