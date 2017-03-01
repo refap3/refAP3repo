@@ -3,6 +3,8 @@
  sudo systemctl enable nodered.service
  sudo apt-get install npm -y
  sudo npm i -g npm@2.x
+ 
+ npm install node-red-node-grovepi
 
  cp ~/refAP3repo/PI_scripts/.bash_aliases ~/
  git config credential.helper store
