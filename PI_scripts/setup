@@ -6,9 +6,9 @@ cd ~
  
  echo "Looks like cannot install nodes from command line -- install from Manage Palette within Node Red"
  
- #! npm install node-red-node-grovepi
- #! npm install node-red-node-dweetio
- #! npm install node-red-dashboard
+ # npm install node-red-node-grovepi
+ # npm install node-red-node-dweetio
+ # npm install node-red-dashboard
 
  sudo systemctl enable nodered.service
   
