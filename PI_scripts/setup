@@ -4,7 +4,7 @@
  cp ~/refAP3repo/PI_scripts/.bash_aliases ~/
  git config credential.helper store
  git config --global user.name loclPI
- git config --global user.email loclPI@hirntod.com'
+ git config --global user.email loclPI@hirntod.com
  ' . ~/.bash_aliases '
  sl 
  
