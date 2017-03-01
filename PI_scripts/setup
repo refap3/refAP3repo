@@ -4,12 +4,14 @@ cd ~
  sudo apt-get install npm -y
  sudo npm i -g npm@2.x
  
- npm install node-red-node-grovepi
- npm install node-red-node-dweetio
- npm install node-red-dashboard
+ echo "Looks like cannot install nodes from command line -- install from Manage Palette within Node Red"
+ 
+ #! npm install node-red-node-grovepi
+ #! npm install node-red-node-dweetio
+ #! npm install node-red-dashboard
 
  sudo systemctl enable nodered.service
- 
+  
  cp ~/refAP3repo/PI_scripts/.bash_aliases ~/
  
  git config credential.helper store
