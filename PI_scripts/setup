@@ -5,7 +5,7 @@ cd ~
  sudo npm i -g npm@2.x
  
  echo "Looks like cannot install nodes from command line -- install from Manage Palette within Node Red"
- 
+ echo "------------------------------------------------------------------------------------------------"
  echo  "npm install node-red-node-grovepi"
  echo  "npm install node-red-node-dweetio"
  echo  "npm install node-red-dashboard"
