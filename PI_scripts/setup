@@ -2,6 +2,6 @@
 #!/bin/bash  
  sudo systemctl enable nodered.service
  cp ~/refAP3repo/PI_scripts/.bash_aliases ~/
- ' . ~/.bashrc '
+ ' . ~/.bash_aliases '
  gpushsetup
  
