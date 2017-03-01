@@ -5,7 +5,7 @@
  git config credential.helper store
  git config --global user.name loclPI
  git config --global user.email loclPI@hirntod.com
- ' . ~/.bash_aliases '
+ . ~/.bash_aliases 
  sl 
  
  
