@@ -1,4 +1,4 @@
-some sample files for the Raspberry Pi Sense Hat 
+Some sample files for the Raspberry Pi Sense Hat 
 ----------------------------------------------------
 
 
