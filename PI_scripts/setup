@@ -6,6 +6,6 @@
  git config --global user.name loclPI
  git config --global user.email loclPI@hirntod.com
  . ~/.bash_aliases 
- sl 
+ 
  
  
