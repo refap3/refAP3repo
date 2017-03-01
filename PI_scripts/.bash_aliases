@@ -30,5 +30,6 @@ alias gcc='git config credential.helper store '
 alias gf='git fetch '
 alias gdm='git diff master origin/master'
 alias gk='gitk'
+alias gpushsetup='git config credential.helper store;git config --global user.name loclPI;git config --global user.email loclPI@hirntod.com'
 
 alias sl=' . ~/.bashrc '
