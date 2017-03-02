@@ -7,10 +7,12 @@ echo "unsure if this will ever work -- revert to inited version of noobs"
 
  sudo apt-get update -y
  update-nodejs-and-nodered
- echo "maybe this works now???"
- npm install node-red-contrib-grovepi
- npm install node-red-node-dweetio
- npm install node-red-dashboard
+ echo "maybe this works now -- NO DOES NOT if installed this way the  nodes never make it in the GUI"
+ echo "install it VIA manage Palette!!!!!!!!!!!!!!"
+ 
+ echo "npm install node-red-contrib-grovepi"
+ echo "npm install node-red-node-dweetio"
+ echo "npm install node-red-dashboard"
 
  sudo systemctl enable nodered.service
   
