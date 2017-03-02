@@ -3,6 +3,10 @@
 cd ~
 pwd 
 
+echo "unsure if this will ever work -- revert to inited version of noobs"
+
+ sudo apt-get update -y
+ update-nodejs-and-nodered
  sudo apt-get install npm -y
  sudo npm i -g npm@2.x
  
