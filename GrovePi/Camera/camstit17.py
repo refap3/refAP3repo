@@ -1,4 +1,9 @@
 #!/usr/bin/python 
+
+# call like this: 
+# /home/pi/refAP3repo/GrovePi/Camera/camstit17.py
+
+
 url="http://stit17.azurewebsites.net:80/api/alexa/kweki"
 
 try:
