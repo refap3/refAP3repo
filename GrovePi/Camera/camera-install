@@ -120,3 +120,24 @@
   120  history
   121  # last update FAILED 
   122  history >camera-install
+  123  ls 
+  124  gs 
+  125  ga *
+  126  git add *
+  127  gs
+  128  git add camera-install 
+  129  gs
+  130  gac -m"more"
+  131  gsysnc
+  132  gs
+  133  gps
+  134  gpl
+  135  cd ~
+  136* sudo apt-get install uv4l-
+  137  # ignored provious error and continued install ...
+  138  sudo apt-get install uv4l-raspicam-extras
+  139  # restart the camera service 
+  140  sudo service uv4l_raspicam restart 
+  141  cd refAP3repo/GrovePi/Camera/
+  142  history 
+  143  history >camera-install
