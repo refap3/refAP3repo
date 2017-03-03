@@ -1,0 +1,8 @@
+#!/bin/bash 
+while :
+do
+	echo "RESTART -- /home/pi/refAP3repo/GrovePi/Camera/dw-camstit17.py"
+	/home/pi/refAP3repo/GrovePi/Camera/dw-camstit17.py
+	sleep 0
+done
+
