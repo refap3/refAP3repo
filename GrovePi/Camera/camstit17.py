@@ -1,6 +1,6 @@
 #!/usr/bin/python 
 
-# detect STIT faces and tweet  
+# imported from faces2twitter for STIT 17 
 import datetime 
 import time
 import subprocess
@@ -63,89 +63,59 @@ def setup():
     pinMode(led,"OUTPUT")
     pinMode(button,"OUTPUT")
 
-    ts = time.time()
-    now = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
-    api.update_status("STIT face detection start at: " + now)
-
     print "Twitter Connected"
     beep(0.01)
 
 
 def loop():
-    while True:
-        try:
-            setRGB(0,128,64)
-            setRGB(0,255,0)
-            # Read distance value from Ultrasonic
-            distant = ultrasonicRead(ultrasonic_ranger)
-            button_state=digitalRead(button)
-            if (distant <= trigger) and (button_state):
-    #            print 'Alarm ', distant,'cm', 'trigger', trigger
-                flushLCD('+++ ' + str(distant) + ':'  + str(trigger))
+	try:
+		setRGB(0,128,64)
+		setRGB(0,255,0)
+		# Read distance value from Ultrasonic
+		distant = ultrasonicRead(ultrasonic_ranger)
+		button_state=digitalRead(button)
+		flushLCD('+++ ' + str(distant) + ':'  + str(trigger))
 
-                analogWrite(led,255)
-                # count down for photo !
-                flushLCD('SMILE!')
-                beep (0.01)
-                time.sleep (1)
-                beep (0.02)
-                time.sleep(1)
-                beep (0.1)
-                time.sleep (1)
-                
-                frame=myCamera.getImage()
-                flushLCD('processing ...')
-                faces=frame.findHaarFeatures('face')
-                if faces:
-                    print str(len(faces)) + " faces"
-                    fct=0
-                    ts = time.time()
-                    now = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
+		analogWrite(led,255)
+		# count down for photo !
+		flushLCD('SMILE!')
+		beep (0.01)
+		time.sleep (1)
+		beep (0.02)
+		time.sleep(1)
+		beep (0.1)
+		time.sleep (1)
+		
+		frame=myCamera.getImage()
+		flushLCD('processing ...')
+		ts = time.time()
+		now = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
+		photo='/home/pi/tmp/' + now + '.jpg' # NOTE MUST use absolute path here!
+		psize=frame.width*frame.height 
+		print "Photo Size: " + photo + " " + str(psize)
+		myDL=DrawingLayer((frame.width,frame.height))
+		myDL.setFontSize(25)
+		myDL.text("I am " + str(distant) + " cm next to a PiCam!",(frame.width/2 - 140,10),color=Color.WHITE)
+		frame.addDrawingLayer(myDL)
+		frame.applyLayers()
+		
+		frame.save(photo)
+		beep (0.05)
+		time.sleep(0.3)
+		beep(0.2)
 
-                    for face in faces:
-                        fct+=1
-                        print "face " + str(fct) + " at: " + str(face.coordinates())
-                        myFace=face.crop()  # tweet all faces ...
-                        photo='/home/pi/tmp/' + now + 'F-' + str(fct) + '.jpg' # NOTE MUST use absolute path here!
-                        psize=myFace.width*myFace.height 
-                        if psize>20000: #looks like smaller images are thrash 
-                            print "Photo Size: " + photo + " " + str(psize)
-                            myDL=DrawingLayer((myFace.width,myFace.height))
-                            myDL.setFontSize(25)
-                            myDL.text("I am " + str(distant) + " cm next to a PiCam!",(myFace.width/2 - 140,10),color=Color.WHITE)
-                            myFace.addDrawingLayer(myDL)
-                            myFace.applyLayers()
-                            
-                            myFace.save(photo)
-                            beep (0.05)
-                            time.sleep(0.3)
-                            beep(0.2)
+		time.sleep(1) # wait save complete ...
+		status = 'Look Ma, I did the #stit17 @ #FHburgenland just now: ' + now
+		status = 'I did stitedt ITTed ' + now
+		# tweet ...
+		api.update_with_media(photo, status=status)
+		logLCD('TWEETed!')
 
-                            time.sleep(1) # wait save complete ...
-                            status = 'Look Ma, I did the #lnf16 @ #FHburgenland just now: ' + now
-                            # tweet ...
-                            api.update_with_media(photo, status=status)
-                            logLCD('TWEETed!')
-
-                        else:
-                            print "Face skipped too small: " + str(psize)
-                            logLCD("Face " + str(fct) + " skipped too small: " + str(psize))
-
-    #                print 'Sleep before next watch cycle ...'
-                else:
-                    logLCD('NO faces detected!')
-                    
-            else:
-    #            print 'No Alarm ', distant,'cm' , 'trigger', trigger
-                flushLCD('--- ' + str(distant) + ':'  + str(trigger))
-                analogWrite(led,0)
-                
-            time.sleep(1)
-            
-        except TypeError:
-            print "Error"
-        except IOError:
-            print "Error"
+	
+	except TypeError:
+		print "Type Error"
+	except IOError:
+		print "IO Error"
 
 def destroy():
     print 'DONE looking for faces ...'
