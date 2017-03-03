@@ -6,6 +6,7 @@ import dweepy
 import camstit17
 
 try:
+	# add a fccing WHILE TRUE loop here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	thing = 'stit17tweet'
 	print 'Subscribe dweet.io for thing: ' + thing
 	for dweet in dweepy.listen_for_dweets_from(thing):
