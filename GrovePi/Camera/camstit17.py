@@ -162,13 +162,17 @@ def destroy():
     print 'DONE looking for faces ...'
     digitalWrite(buzzer_pin,0)
     pass
-        
-if __name__ == '__main__':
+	
+def work(): 
     setup()
     try:
         loop()
     except KeyboardInterrupt: 
         destroy()
+	
+        
+if __name__ == '__main__':
+	work()
                
         
 
