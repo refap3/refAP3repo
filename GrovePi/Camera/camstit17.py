@@ -1,4 +1,14 @@
 #!/usr/bin/python 
+url="http://stit17.azurewebsites.net:80/api/alexa/kweki"
+
+try:
+    # For Python 3.0 and later
+    from urllib.request import urlopen
+except ImportError:
+    # Fall back to Python 2's urllib2
+    from urllib2 import urlopen
+
+import json
 
 # imported from faces2twitter for STIT 17 
 import datetime 
@@ -66,9 +76,35 @@ def setup():
     print "Twitter Connected"
     beep(0.01)
 
+def get_jsonparsed_data(url):
+    """
+    Receive the content of ``url``, parse it as JSON and return the object.
+
+    Parameters
+    ----------
+    url : str
+
+    Returns
+    -------
+    dict
+	
+	Call like this: 
+	-----------------
+	j=get_jsonparsed_data(url)
+	print j
+	print j["Ort"]
+	
+    """
+    response = urlopen(url)
+    data = response.read().decode("utf-8")
+    return json.loads(data)
+
+	
+
 
 def loop():
 	try:
+		json=get_jsonparsed_data(url)
 		setRGB(0,128,64)
 		setRGB(0,255,0)
 		# Read distance value from Ultrasonic
@@ -92,10 +128,10 @@ def loop():
 		now = datetime.datetime.fromtimestamp(ts).strftime('%Y%m%d-%H%M%S')
 		photo='/home/pi/tmp/' + now + '.jpg' # NOTE MUST use absolute path here!
 		psize=frame.width*frame.height 
-		print "Photo Size: " + photo + " " + str(psize)
+		print "Photo Size: " + photo + " " + str(psize) + " w:" + str(frame.width) + " h: " + str(frame.height)
 		myDL=DrawingLayer((frame.width,frame.height))
-		myDL.setFontSize(25)
-		myDL.text("I am " + str(distant) + " cm next to a PiCam!",(frame.width/2 - 140,10),color=Color.WHITE)
+		myDL.setFontSize(45)
+		myDL.text("Quake report from " + json["Ort"] + " with Strength of " + json["LastStrengthString"] + " at: " + json["LastOccured"] ,(10,10),color=Color.RED)
 		frame.addDrawingLayer(myDL)
 		frame.applyLayers()
 		
