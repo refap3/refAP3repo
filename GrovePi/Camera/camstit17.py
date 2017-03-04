@@ -1,4 +1,7 @@
 #!/usr/bin/python 
+# this is called by dw-camstit17.py which in turn is called by wrap_call whin in turn is called by .bashrc
+# OMG wtf ! 
+# reason for this boody mess is that dweet.io subscription crash after 30 secs or so ...
 
 # call like this: 
 # /home/pi/refAP3repo/GrovePi/Camera/camstit17.py
