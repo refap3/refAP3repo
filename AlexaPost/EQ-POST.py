@@ -33,6 +33,8 @@ def dweetEQ(quakstr):
 def setup():
     time.sleep(0.1)
 def loop():
+    pixels = [white for i in range(64)]
+    sense.set_pixels(pixels)
     quak=0.0
     t_end=time.time() + 3 # run for x secs
     while time.time() < t_end:
