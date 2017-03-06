@@ -7,6 +7,7 @@ import requests
 import json 
 from random import randint
 
+LIMIT = 6 # no quake below this !
 sense = SenseHat()
 green = (255, 0, 0)
 blue = ( 0, 0, 255)
@@ -80,12 +81,17 @@ def loop():
         print("x=%s, y=%s, z=%s" % (x, y, z))
         time.sleep(0.1)
     quak=math.sqrt(quak)
-    quakstr1=str(round(quak,1))
-    quakstr=quakstr1.replace('.',',')
-    print "you quaked: " + quakstr
-    sense.show_message(str(int(round(quak,0))))
-    postEQ(quakstr)
-    dweetEQ(quakstr1)
+    if quak > LIMIT:
+        quakstr1=str(round(quak,1))
+        quakstr=quakstr1.replace('.',',')
+        print "you quaked: " + quakstr
+        sense.show_message(str(int(round(quak,0))))
+        postEQ(quakstr)
+        dweetEQ(quakstr1)
+
+    else:
+        sense.show_message("NOPE: " +str(int(round(quak,0))))
+	
 
 if __name__ == '__main__':
     setup()
