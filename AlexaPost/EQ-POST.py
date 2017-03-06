@@ -85,14 +85,13 @@ def loop():
     quakstr=quakstr1.replace('.',',')
 
 if quak > LIMIT:
-        print "you quaked: " + quakstr
-        sense.show_message(str(int(round(quak,0))))
-        postEQ(quakstr)
-        dweetEQ(quakstr1)
-
-    else:
-        print "NOPE only: " + quakstr
-        sense.show_message("NOPE: " +str(int(round(quak,0))))
+    print "you quaked: " + quakstr
+    sense.show_message(str(int(round(quak,0))))
+    postEQ(quakstr)
+    dweetEQ(quakstr1)
+else:
+    print "NOPE only: " + quakstr
+    sense.show_message("NOPE: " +str(int(round(quak,0))))
 	
 
 if __name__ == '__main__':
