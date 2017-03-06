@@ -78,18 +78,20 @@ def loop():
 	pixels = [green if i < quakled else white for i in range(64)]
 	sense.set_pixels(pixels)
 	
-        print("x=%s, y=%s, z=%s" % (x, y, z))
+        # print("x=%s, y=%s, z=%s" % (x, y, z))
         time.sleep(0.1)
     quak=math.sqrt(quak)
-    if quak > LIMIT:
-        quakstr1=str(round(quak,1))
-        quakstr=quakstr1.replace('.',',')
+    quakstr1=str(round(quak,1))
+    quakstr=quakstr1.replace('.',',')
+
+if quak > LIMIT:
         print "you quaked: " + quakstr
         sense.show_message(str(int(round(quak,0))))
         postEQ(quakstr)
         dweetEQ(quakstr1)
 
     else:
+        print "NOPE only: " + quakstr
         sense.show_message("NOPE: " +str(int(round(quak,0))))
 	
 
