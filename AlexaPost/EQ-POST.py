@@ -10,6 +10,14 @@ sense = SenseHat()
 green = (255, 0, 0)
 white = (0, 0, 0)
 
+def randomsparkle():
+    x = randint(0, 7)
+    y = randint(0, 7)
+    r = randint(0, 255)
+    g = randint(0, 255)
+    b = randint(0, 255)
+    sense.set_pixel(x, y, r, g, b)
+
 def postEQ(quakstr):
     # note that the param value is encoded in url !
     url = 'https://dweet.io:443/dweet/for/stit17lastQ?stit17lastQ='+quakstr
@@ -33,6 +41,12 @@ def dweetEQ(quakstr):
 def setup():
     time.sleep(0.1)
 def loop():
+    # RANDOM Sparkle for 3 secs ...
+    t_end=time.time() + 3 # run for x secs
+    while time.time() < t_end:
+	randomsparkle
+	sleep(0.01)
+
     pixels = [white for i in range(64)]
     sense.set_pixels(pixels)
     quak=0.0
