@@ -5,6 +5,7 @@ import time
 import math
 import requests
 import json 
+from random import randint
 
 sense = SenseHat()
 green = (255, 0, 0)
