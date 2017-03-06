@@ -1,0 +1,379 @@
+[
+    {
+        "id": "2f62a260.058a2e",
+        "type": "rpi-sensehat in",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "motion": true,
+        "env": false,
+        "stick": false,
+        "x": 257,
+        "y": 133,
+        "wires": [
+            [
+                "53d3d79f.955da8"
+            ]
+        ]
+    },
+    {
+        "id": "83c3b3ab.8a7ff",
+        "type": "delay",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "5",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "x": 861,
+        "y": 273,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "53d3d79f.955da8",
+        "type": "delay",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "2",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "x": 458,
+        "y": 139,
+        "wires": [
+            [
+                "fc550931.4879c8"
+            ]
+        ]
+    },
+    {
+        "id": "17db5d2.5653ca3",
+        "type": "rpi-sensehat in",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "motion": false,
+        "env": true,
+        "stick": false,
+        "x": 507,
+        "y": 269,
+        "wires": [
+            [
+                "83c3b3ab.8a7ff"
+            ]
+        ]
+    },
+    {
+        "id": "bf9ebf8.e9b0d4",
+        "type": "rpi-sensehat in",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "motion": false,
+        "env": false,
+        "stick": true,
+        "x": 476,
+        "y": 380,
+        "wires": [
+            [
+                "86905829.76c0c8"
+            ]
+        ]
+    },
+    {
+        "id": "86905829.76c0c8",
+        "type": "delay",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "5",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "x": 734,
+        "y": 383,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fc550931.4879c8",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "splitObjectsAcc_Gyr_Ori_Com",
+        "func": "var ma = { \"payload\": msg.payload.acceleration} ;\nvar mg = { \"payload\": msg.payload.gyroscope} ;\nvar mo = { \"payload\": msg.payload.orientation} ;\nvar mc = { \"payload\": msg.payload.compass} ;\nreturn [ma, mg, mo, mc];",
+        "outputs": "4",
+        "noerr": 0,
+        "x": 761,
+        "y": 155,
+        "wires": [
+            [
+                "528b60d6.2af68"
+            ],
+            [
+                "74a1a797.d3cd78"
+            ],
+            [
+                "6370a1c1.7b2b2"
+            ],
+            [
+                "fd53c810.ac9df8"
+            ]
+        ]
+    },
+    {
+        "id": "cc197aa1.862318",
+        "type": "ui_chart",
+        "z": "9a13d40c.d2c258",
+        "name": "chartAcceleration",
+        "group": "7a88679e.3fc848",
+        "order": 0,
+        "width": "6",
+        "height": "6",
+        "label": "Acceleration",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "ss",
+        "interpolate": "bezier",
+        "nodata": "Sensor Hat Acceleration Sensor",
+        "ymin": "-3",
+        "ymax": "3",
+        "removeOlder": "1",
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "colors": [
+            "#1f77b4",
+            "#00ff40",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "x": 1544,
+        "y": 134,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "528b60d6.2af68",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "ChartAcceleration",
+        "func": "\nvar m1 = { \"payload\": msg.payload.x, \"topic\": \"X\" } ;\nvar m2 = { \"payload\": msg.payload.y, \"topic\": \"Y\" } ;\nvar z =msg.payload.z;\nz=z-1;\nvar m3 = { \"payload\": z, \"topic\": \"Z\" } ;\n\nreturn [m1, m2, m3];",
+        "outputs": "3",
+        "noerr": 0,
+        "x": 1178,
+        "y": 120,
+        "wires": [
+            [
+                "cc197aa1.862318"
+            ],
+            [
+                "cc197aa1.862318"
+            ],
+            [
+                "cc197aa1.862318"
+            ]
+        ]
+    },
+    {
+        "id": "2ee42115.02633e",
+        "type": "ui_chart",
+        "z": "9a13d40c.d2c258",
+        "name": "chartGyroscope",
+        "group": "7a88679e.3fc848",
+        "order": 0,
+        "width": "6",
+        "height": "6",
+        "label": "Gyroscope",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "ss",
+        "interpolate": "bezier",
+        "nodata": "Sensor Hat Gyroscope Sensor",
+        "ymin": "-5",
+        "ymax": "5",
+        "removeOlder": "1",
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "colors": [
+            "#1f77b4",
+            "#00ff40",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "x": 1519,
+        "y": 261,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "74a1a797.d3cd78",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "ChartGyroscope",
+        "func": "\nvar m1 = { \"payload\": msg.payload.x, \"topic\": \"X\" } ;\nvar m2 = { \"payload\": msg.payload.y, \"topic\": \"Y\" } ;\nvar m3 = { \"payload\": msg.payload.z, \"topic\": \"Z\" } ;\n\nreturn [m1, m2, m3];",
+        "outputs": "3",
+        "noerr": 0,
+        "x": 1198,
+        "y": 290,
+        "wires": [
+            [
+                "2ee42115.02633e"
+            ],
+            [
+                "2ee42115.02633e"
+            ],
+            [
+                "2ee42115.02633e"
+            ]
+        ]
+    },
+    {
+        "id": "6370a1c1.7b2b2",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "ChartOrientation",
+        "func": "\nvar m1 = { \"payload\": msg.payload.roll, \"topic\": \"Roll\" } ;\nvar m2 = { \"payload\": msg.payload.pitch, \"topic\": \"Pitch\" } ;\nvar m3 = { \"payload\": msg.payload.yaw, \"topic\": \"Yaw\" } ;\n\nreturn [m1, m2, m3];",
+        "outputs": "3",
+        "noerr": 0,
+        "x": 1277,
+        "y": 449,
+        "wires": [
+            [
+                "d9f60cbe.63f61"
+            ],
+            [
+                "d9f60cbe.63f61"
+            ],
+            [
+                "d9f60cbe.63f61"
+            ]
+        ]
+    },
+    {
+        "id": "fd53c810.ac9df8",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "Compass",
+        "func": "\nvar m1 = { \"payload\": msg.payload, \"topic\": \"Compass\" } ;\n\nreturn m1 ; ",
+        "outputs": "1",
+        "noerr": 0,
+        "x": 1327,
+        "y": 567,
+        "wires": [
+            [
+                "80e5726b.3e8c6"
+            ]
+        ]
+    },
+    {
+        "id": "80e5726b.3e8c6",
+        "type": "ui_gauge",
+        "z": "9a13d40c.d2c258",
+        "name": "compass",
+        "group": "7a88679e.3fc848",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "compass",
+        "title": "Compass",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "360",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 1565,
+        "y": 654,
+        "wires": []
+    },
+    {
+        "id": "d9f60cbe.63f61",
+        "type": "ui_chart",
+        "z": "9a13d40c.d2c258",
+        "name": "chartOrientation",
+        "group": "7a88679e.3fc848",
+        "order": 0,
+        "width": "6",
+        "height": "6",
+        "label": "Orientation",
+        "chartType": "bar",
+        "legend": "false",
+        "xformat": "ss",
+        "interpolate": "bezier",
+        "nodata": "Sensor Hat Orientation Sensor",
+        "ymin": "00",
+        "ymax": "360",
+        "removeOlder": "1",
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "colors": [
+            "#ffff80",
+            "#0000ff",
+            "#8000ff",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "x": 1532,
+        "y": 448,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "7a88679e.3fc848",
+        "type": "ui_group",
+        "z": "",
+        "name": "Sensor Hat",
+        "tab": "17b687e3.f93fc8",
+        "disp": true,
+        "width": "24"
+    },
+    {
+        "id": "17b687e3.f93fc8",
+        "type": "ui_tab",
+        "name": "Tab",
+        "icon": "dashboard",
+        "order": 0
+    }
+]
