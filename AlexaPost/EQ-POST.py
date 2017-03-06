@@ -53,7 +53,7 @@ def loop():
     quakstr1=str(round(quak,1))
     quakstr=quakstr1.replace('.',',')
     print "you quaked: " + quakstr
-    sense.show_message(str(round(quak,0)))
+    sense.show_message(str(int(round(quak,0))))
     postEQ(quakstr)
     dweetEQ(quakstr1)
 
