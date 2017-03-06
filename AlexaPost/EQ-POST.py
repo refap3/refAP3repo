@@ -9,10 +9,10 @@ from random import randint
 
 LIMIT = 6 # no quake below this !
 sense = SenseHat()
-green = (255, 0, 0)
-blue = ( 0, 0, 255)
-white = (0, 0, 0)
-bright = (255,255,255)
+RED = (255, 0, 0)
+BLUE = ( 0, 0, 255)
+BLACK = (0, 0, 0)
+WHITE = (255,255,255)
 
 def randomsparkle(sense):
     x = randint(0, 7)
@@ -56,16 +56,16 @@ def loop():
         # BLANK screen for 1 secs ...
         t_end=time.time() + 1 # run for x secs
         while time.time() < t_end:
-            pixels = [blue for i in range(64)]
+            pixels = [BLUE for i in range(64)]
             sense.set_pixels(pixels)
         
         # flash brief 
-        pixels = [bright for i in range(64)]
+        pixels = [WHITE for i in range(64)]
         sense.set_pixels(pixels)
         time.sleep(0.5)
 
         # GO 
-        pixels = [white for i in range(64)]
+        pixels = [BLACK for i in range(64)]
         sense.set_pixels(pixels)
         quak=0.0
         t_end=time.time() + 3 # run for x secs
@@ -76,7 +76,7 @@ def loop():
             z = round(z, 2)
             quak+=math.sqrt((0-x)**2+(0-y)**2+(1-z)**2)
             quakled=math.sqrt(quak)/30 * 64 
-            pixels = [green if i < quakled else white for i in range(64)]
+            pixels = [RED if i < quakled else BLACK for i in range(64)]
             sense.set_pixels(pixels)
             # print("x=%s, y=%s, z=%s" % (x, y, z))
             time.sleep(0.1)
