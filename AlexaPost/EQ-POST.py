@@ -45,7 +45,7 @@ def loop():
     t_end=time.time() + 3 # run for x secs
     while time.time() < t_end:
 	randomsparkle
-	sleep(0.01)
+	time.sleep(0.01)
 
     pixels = [white for i in range(64)]
     sense.set_pixels(pixels)
