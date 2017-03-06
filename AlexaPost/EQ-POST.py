@@ -10,7 +10,7 @@ sense = SenseHat()
 green = (255, 0, 0)
 white = (0, 0, 0)
 
-def randomsparkle():
+def randomsparkle(sense):
     x = randint(0, 7)
     y = randint(0, 7)
     r = randint(0, 255)
@@ -44,7 +44,7 @@ def loop():
     # RANDOM Sparkle for 3 secs ...
     t_end=time.time() + 3 # run for x secs
     while time.time() < t_end:
-	randomsparkle
+	randomsparkle(sense)
 	time.sleep(0.01)
 
     pixels = [white for i in range(64)]
