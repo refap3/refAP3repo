@@ -10,6 +10,15 @@ sense = SenseHat()
 
 def postEQ(quakstr):
     # note that the param value is encoded in url !
+    url = 'https://dweet.io:443/dweet/for/stit17lastQ?stit17lastQ='+quakstr
+    response = requests.post(url)
+
+    print response
+    data = json.loads(response.text)
+
+    print  (data) 
+	
+def dweetEQ(quakstr):
     url = 'http://stit17.azurewebsites.net:80/api/alexa/lastquake?lastQuakeStrentgh='+quakstr
     response = requests.post(url)
 
@@ -17,7 +26,7 @@ def postEQ(quakstr):
     data = json.loads(response.text)
 
     print  (data) 
-
+	
 
 def setup():
     time.sleep(0.1)
@@ -33,9 +42,11 @@ def loop():
         print("x=%s, y=%s, z=%s" % (x, y, z))
         time.sleep(0.1)
     quak=math.sqrt(quak)
-    quakstr=str(round(quak,1)).replace('.',',')
+    quakstr1=str(round(quak,1))
+    quakstr=quakstr1.replace('.',',')
     print "you quaked: " + quakstr
     postEQ(quakstr)
+    dweetEQ(quakstr1)
 
 if __name__ == '__main__':
     setup()
