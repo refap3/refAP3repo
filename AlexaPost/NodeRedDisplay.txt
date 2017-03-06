@@ -361,6 +361,60 @@
         ]
     },
     {
+        "id": "c5b08883.de2d88",
+        "type": "dweetio in",
+        "z": "9a13d40c.d2c258",
+        "thing": "stit17lastQ",
+        "name": "",
+        "x": 257,
+        "y": 549,
+        "wires": [
+            [
+                "95d65e5.c92cda"
+            ]
+        ]
+    },
+    {
+        "id": "f0d8a44f.3a1718",
+        "type": "ui_gauge",
+        "z": "9a13d40c.d2c258",
+        "name": "lastQ",
+        "group": "7a88679e.3fc848",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "wave",
+        "title": "last Quake",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "20",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 473,
+        "y": 544,
+        "wires": []
+    },
+    {
+        "id": "95d65e5.c92cda",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "func": "var f = parseFloat(msg.payload.stit17lastQ );\n\nmsg.payload=f ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 347,
+        "y": 625,
+        "wires": [
+            [
+                "f0d8a44f.3a1718"
+            ]
+        ]
+    },
+    {
         "id": "7a88679e.3fc848",
         "type": "ui_group",
         "z": "",
