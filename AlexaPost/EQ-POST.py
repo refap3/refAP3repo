@@ -9,7 +9,9 @@ from random import randint
 
 sense = SenseHat()
 green = (255, 0, 0)
+blue = ( 0, 0, 255)
 white = (0, 0, 0)
+bright = (255,255,255)
 
 def randomsparkle(sense):
     x = randint(0, 7)
@@ -42,12 +44,25 @@ def dweetEQ(quakstr):
 def setup():
     time.sleep(0.1)
 def loop():
+	
     # RANDOM Sparkle for 3 secs ...
     t_end=time.time() + 3 # run for x secs
     while time.time() < t_end:
 	randomsparkle(sense)
 	time.sleep(0.01)
 
+    # BLANK screen for 1 secs ...
+    t_end=time.time() + 1 # run for x secs
+    while time.time() < t_end:
+        pixels = [blue for i in range(64)]
+        sense.set_pixels(pixels)
+	
+    # flash brief 
+    pixels = [bright for i in range(64)]
+    sense.set_pixels(pixels)
+    time.sleep(0.5)
+
+    # GO 
     pixels = [white for i in range(64)]
     sense.set_pixels(pixels)
     quak=0.0
