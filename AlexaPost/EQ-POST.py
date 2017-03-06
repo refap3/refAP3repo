@@ -88,7 +88,7 @@ def loop():
         if quak > LIMIT:
             print "you quaked: " + quakstr
             sense.show_message(str(int(round(quak,0))))
-            postEQ(quakstr1)
+            postEQ(quakstr)
             dweetEQ(quakstr1)
         else:
             print "NOPE only: " + quakstr
