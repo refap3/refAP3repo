@@ -41,7 +41,7 @@ def loop():
         y = round(y, 2)
         z = round(z, 2)
         quak+=math.sqrt((0-x)**2+(0-y)**2+(1-z)**2)
-	quakled=quak/30 * 64 
+	quakled=math.sqrt(quak)/30 * 64 
 	pixels = [green if i < quakled else white for i in range(64)]
 	sense.set_pixels(pixels)
 	
