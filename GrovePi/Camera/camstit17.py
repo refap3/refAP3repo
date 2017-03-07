@@ -23,7 +23,7 @@ def setup():
 
     pinMode(buzzer_pin,"OUTPUT")
     pinMode(led,"OUTPUT")
-    pinMode(button,"OUTPUT")
+    # pinMode(button,"OUTPUT")
 
     print "Twitter Connected"
     beep(0.01)
@@ -57,9 +57,9 @@ def loop():
 		setRGB(0,128,64)
 		setRGB(0,255,0)
 		# Read distance value from Ultrasonic
-		distant = ultrasonicRead(ultrasonic_ranger)
-		button_state=digitalRead(button)
-		flushLCD('+++ ' + str(distant) + ':'  + str(trigger))
+		# distant = ultrasonicRead(ultrasonic_ranger)
+		# button_state=digitalRead(button)
+		# flushLCD('+++ ' + str(distant) + ':'  + str(trigger))
 
 		analogWrite(led,255)
 		# count down for photo !
@@ -140,11 +140,11 @@ from grove_rgb_lcd import *
 from SimpleCV import Camera, Display, DrawingLayer, Color
 
 # GrovePi connections ...
-ultrasonic_ranger = 7 #D7
+# ultrasonic_ranger = 7 #D7
 trigger = 50  # trigger distance in cm  
 buzzer_pin=2 # D2 connect buzzer here - will confirm face detected
 led=5 # D5 
-button=6 # D6 
+# button=6 # D6 
 # LCD on any I2C Port 
 
 
