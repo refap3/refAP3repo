@@ -192,9 +192,7 @@ else:
     consumer_secret = 'X2VBypa9BSthbCqy5q525TdTrIhLsehkWoUvuH4vyjMU5nhxjr'  
     access_token = '1249046982-FXBXziqqEyAVkTBFp7AOb9kgHXfSNh2XH92RxIC'  
     access_token_secret = 'HsaIWIJk24hhqc3omvEow7k6syZuRYaCQ1lQ5bjVUAPBZ'  
-
-print consumer_key, consumer_secret
-    
+   
 # OAuth process, using the keys and tokens  
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)  
 auth.set_access_token(access_token, access_token_secret)  
