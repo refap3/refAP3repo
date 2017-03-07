@@ -7,62 +7,6 @@
 # /home/pi/refAP3repo/GrovePi/Camera/camstit17.py
 
 
-url="http://stit17.azurewebsites.net:80/api/alexa/kweki"
-
-try:
-    # For Python 3.0 and later
-    from urllib.request import urlopen
-except ImportError:
-    # Fall back to Python 2's urllib2
-    from urllib2 import urlopen
-
-import json
-
-# imported from faces2twitter for STIT 17 
-import datetime 
-import time
-import subprocess
-import tweepy 
-
-from grovepi import *
-from grove_rgb_lcd import *
-from SimpleCV import Camera, Display, DrawingLayer, Color
-
-# GrovePi connections ...
-ultrasonic_ranger = 7 #D7
-trigger = 50  # trigger distance in cm  
-buzzer_pin=2 # D2 connect buzzer here - will confirm face detected
-led=5 # D5 
-button=6 # D6 
-# LCD on any I2C Port 
-
-
-# T W I T T E R: 
-# Consumer keys and access tokens, used for OAuth  
-twa=0 # set this to 0 to use lecko account OTHERWISE itirockz is used !
-#--------------------------------------------------------------------------
-if (twa==0):
-    consumer_key = 'x6ZHUvQFg2MudvbA5RCNHyPrs'  
-    consumer_secret = 'VNzZqd9cXT03gSOaku6l2uNfj7JSVaYeRIv7yr4T2vCE1mTDIu'  
-    access_token = '23412757-SSbIoMaqCuSyZRUQxp7jq1inhP7CQxYjHTQR3x1MG'  
-    access_token_secret = 'Eqzrcbfose5mEn0i3TDQMwWWVnRfZZhVhaJNjMFLi0ZF1'  
-else:
-    consumer_key = 'qpsCnt3kZxKMu6H0giJaBxyzd'  
-    consumer_secret = 'yTX9WxGqX6mZYxVgSGPBCAchH4lvxaism8yBHP08uGvnOZNVBa'  
-    access_token = '1249046982-KZ8e86QyUfe9dRWmtVRTTvhUEUDReFrS1ODMfq9'  
-    access_token_secret = 'n9iyZ009L0RdRN030HtHgQiB0tsEClvOnAldzTqaV96JC'  
-    
-# OAuth process, using the keys and tokens  
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)  
-auth.set_access_token(access_token, access_token_secret)  
-   
-# Creation of the actual interface, using authentication  
-api = tweepy.API(auth) 
-
-# camera:
-myCamera=Camera(0,  {"width":1024, "height":768})
-
-
 def beep(duration):
     digitalWrite(buzzer_pin,1)
     time.sleep(duration)
@@ -106,13 +50,10 @@ def get_jsonparsed_data(url):
     response = urlopen(url)
     data = response.read().decode("utf-8")
     return json.loads(data)
-
-	
-
-
+    
 def loop():
 	try:
-		json=get_jsonparsed_data(url)
+		json=get_jsonparsed_data(quakeURL)
 		setRGB(0,128,64)
 		setRGB(0,255,0)
 		# Read distance value from Ultrasonic
@@ -144,13 +85,13 @@ def loop():
 		frame.applyLayers()
 		
 		frame.save(photo)
+		analogWrite(led,0)
 		beep (0.05)
 		time.sleep(0.3)
 		beep(0.2)
 
 		time.sleep(1) # wait save complete ...
-		status = 'Look Ma, I did the #stit17 @ #FHburgenland just now: ' + now
-		status = 'I did stitedt ITTed ' + now
+		status = twitterText1 + ' ' + hashtag + ' ' + twitterText2 + ' ' + ' @:' + now + ' ' + twitterText3 + ' '
 		# tweet ...
 		api.update_with_media(photo, status=status)
 		logLCD('TWEETed!')
@@ -172,7 +113,97 @@ def work():
         loop()
     except KeyboardInterrupt: 
         destroy()
-	
+
+        
+# REGION INIT ...        
+
+print "STARTUP...................."
+quakeURL="http://stit17.azurewebsites.net:80/api/alexa/kweki"
+
+try:
+    # For Python 3.0 and later
+    from urllib.request import urlopen
+except ImportError:
+    # Fall back to Python 2's urllib2
+    from urllib2 import urlopen
+
+import json
+
+# imported from faces2twitter for STIT 17 
+import datetime 
+import time
+import subprocess
+import tweepy 
+
+from grovepi import *
+from grove_rgb_lcd import *
+from SimpleCV import Camera, Display, DrawingLayer, Color
+
+# GrovePi connections ...
+ultrasonic_ranger = 7 #D7
+trigger = 50  # trigger distance in cm  
+buzzer_pin=2 # D2 connect buzzer here - will confirm face detected
+led=5 # D5 
+button=6 # D6 
+# LCD on any I2C Port 
+
+
+# get the run time parameters .....
+# twitter index and hashtag ...
+configBaseURL="http://stit17.azurewebsites.net:80/api/Configurations/"
+indexTwitter=6
+indexHashTag=7
+indexTWITTER1=10
+indexTWITTER2=11
+indexTWITTER3=12
+
+paramjson=get_jsonparsed_data(configBaseURL+str(indexTwitter))
+twa=int(paramjson["Value"])
+paramjson=get_jsonparsed_data(configBaseURL+str(indexHashTag))
+hashtag=paramjson["Value"] or ""
+paramjson=get_jsonparsed_data(configBaseURL+str(indexTWITTER1))
+twitterText1=paramjson["Value"] or ""
+paramjson=get_jsonparsed_data(configBaseURL+str(indexTWITTER2))
+twitterText2=paramjson["Value"] or ""
+paramjson=get_jsonparsed_data(configBaseURL+str(indexTWITTER3))
+twitterText3=paramjson["Value"] or ""
+
+    
+
+print str(twa)
+print hashtag
+print twitterText1
+print twitterText2
+print twitterText3
+
+
+
+# T W I T T E R: 
+# Consumer keys and access tokens, used for OAuth  
+twa=0 # set this to 0 to use lecko account OTHERWISE itirockz is used !
+#--------------------------------------------------------------------------
+if (twa==0):
+    consumer_key = 'x6ZHUvQFg2MudvbA5RCNHyPrs'  
+    consumer_secret = 'VNzZqd9cXT03gSOaku6l2uNfj7JSVaYeRIv7yr4T2vCE1mTDIu'  
+    access_token = '23412757-SSbIoMaqCuSyZRUQxp7jq1inhP7CQxYjHTQR3x1MG'  
+    access_token_secret = 'Eqzrcbfose5mEn0i3TDQMwWWVnRfZZhVhaJNjMFLi0ZF1'  
+else:
+    consumer_key = 'qpsCnt3kZxKMu6H0giJaBxyzd'  
+    consumer_secret = 'yTX9WxGqX6mZYxVgSGPBCAchH4lvxaism8yBHP08uGvnOZNVBa'  
+    access_token = '1249046982-KZ8e86QyUfe9dRWmtVRTTvhUEUDReFrS1ODMfq9'  
+    access_token_secret = 'n9iyZ009L0RdRN030HtHgQiB0tsEClvOnAldzTqaV96JC'  
+    
+# OAuth process, using the keys and tokens  
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)  
+auth.set_access_token(access_token, access_token_secret)  
+   
+# Creation of the actual interface, using authentication  
+api = tweepy.API(auth) 
+
+# camera:
+myCamera=Camera(0,  {"width":1024, "height":768})
+print "DONE STARTUP...................."
+        
         
 if __name__ == '__main__':
 	work()
