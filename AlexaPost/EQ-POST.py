@@ -71,6 +71,17 @@ def setup():
 def loop():
     # DO FOREVER 
     while True:
+
+        # get the run time parameters ..... we do this HERE in order to respond w/o restarts
+        # minimum Quake Strength and Measure Time for quake  ...
+        configBaseURL="http://stit17.azurewebsites.net:80/api/Configurations/"
+        indexMINQUAKE=8
+        indexMEASURETIME=9
+        paramjson=get_jsonparsed_data(configBaseURL+str(indexMINQUAKE))
+        LIMIT=int(paramjson["Value"]) # no quake below this !
+        paramjson=get_jsonparsed_data(configBaseURL+str(indexMEASURETIME))
+        MEASURE=int(paramjson["Value"]) #  # of secs to measure 
+    
         # RANDOM Sparkle for 3 secs ...
         t_end=time.time() + 3 # run for x secs
         while time.time() < t_end:
@@ -127,19 +138,6 @@ BLUE = ( 0, 0, 255)
 BLACK = (0, 0, 0)
 WHITE = (255,255,255)
 
-# get the run time parameters .....
-# minimum Quake Strength and Measure Time for quake  ...
-configBaseURL="http://stit17.azurewebsites.net:80/api/Configurations/"
-indexMINQUAKE=8
-indexMEASURETIME=9
-
-paramjson=get_jsonparsed_data(configBaseURL+str(indexMINQUAKE))
-LIMIT=int(paramjson["Value"]) # no quake below this !
-paramjson=get_jsonparsed_data(configBaseURL+str(indexMEASURETIME))
-MEASURE=int(paramjson["Value"]) #  # of secs to measure 
-  
-print str(LIMIT)  
-print str(MEASURE)
 
 print "DONE STARTUP...................."
           
