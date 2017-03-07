@@ -82,14 +82,13 @@ def loop():
             time.sleep(0.1)
         
         quak=math.sqrt(quak)
-        quakstr1=str(round(quak,1))
-        quakstr=quakstr1.replace('.',',')
+        quakstr=str(round(quak,1)).replace('.',',')
         
         if quak > LIMIT:
             print "you quaked: " + quakstr
             sense.show_message(str(int(round(quak,0))))
             postEQ(quakstr)
-            dweetEQ(quakstr1)
+            dweetEQ(quakstr)
         else:
             print "NOPE only: " + quakstr
             sense.show_message("NOPE: " +str(int(round(quak,0))))
