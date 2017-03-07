@@ -147,6 +147,7 @@ led=5 # D5
 # button=6 # D6 
 # LCD on any I2C Port 
 
+flushLCD('Starting ...')
 
 # get the run time parameters .....
 # twitter index and hashtag ...
