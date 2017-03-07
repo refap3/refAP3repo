@@ -6,13 +6,14 @@ import math
 import requests
 import json 
 from random import randint
+try:
+    # For Python 3.0 and later
+    from urllib.request import urlopen
+except ImportError:
+    # Fall back to Python 2's urllib2
+    from urllib2 import urlopen
 
-LIMIT = 6 # no quake below this !
-sense = SenseHat()
-RED = (255, 0, 0)
-BLUE = ( 0, 0, 255)
-BLACK = (0, 0, 0)
-WHITE = (255,255,255)
+
 
 def randomsparkle(sense):
     x = randint(0, 7)
@@ -40,10 +41,33 @@ def dweetEQ(quakstr):
     data = json.loads(response.text)
 
     print  (data) 
-    
+
+def get_jsonparsed_data(url):
+    """
+    Receive the content of ``url``, parse it as JSON and return the object.
+
+    Parameters
+    ----------
+    url : str
+
+    Returns
+    -------
+    dict
+	
+	Call like this: 
+	-----------------
+	j=get_jsonparsed_data(url)
+	print j
+	print j["Ort"]
+	
+    """
+    response = urlopen(url)
+    data = response.read().decode("utf-8")
+    return json.loads(data)
 
 def setup():
     time.sleep(0.1)
+
 def loop():
     # DO FOREVER 
     while True:
@@ -68,7 +92,7 @@ def loop():
         pixels = [BLACK for i in range(64)]
         sense.set_pixels(pixels)
         quak=0.0
-        t_end=time.time() + 3 # run for x secs
+        t_end=time.time() + MEASURE # run for x secs
         while time.time() < t_end:
             x, y, z = sense.get_accelerometer_raw().values()
             x = round(x, 2)
@@ -92,7 +116,33 @@ def loop():
         else:
             print "NOPE only: " + quakstr
             sense.show_message("NOPE: " +str(int(round(quak,0))))
-    
+
+
+# REGION INIT ...        
+print "STARTUP...................."
+LIMIT = 6 # no quake below this !
+sense = SenseHat()
+RED = (255, 0, 0)
+BLUE = ( 0, 0, 255)
+BLACK = (0, 0, 0)
+WHITE = (255,255,255)
+
+# get the run time parameters .....
+# minimum Quake Strength and Measure Time for quake  ...
+configBaseURL="http://stit17.azurewebsites.net:80/api/Configurations/"
+indexMINQUAKE=8
+indexMEASURETIME=9
+
+paramjson=get_jsonparsed_data(configBaseURL+str(indexMINQUAKE))
+LIMIT=int(paramjson["Value"]) # no quake below this !
+paramjson=get_jsonparsed_data(configBaseURL+str(indexMEASURETIME))
+MEASURE=int(paramjson["Value"]) #  # of secs to measure 
+  
+print str(LIMIT)  
+print str(MEASURE)
+
+print "DONE STARTUP...................."
+          
 if __name__ == '__main__':
     setup()
 try:
