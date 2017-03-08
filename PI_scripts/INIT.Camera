@@ -1,2 +1,9 @@
-echo "INIT.local -- empty"
+echo "INIT.camera ------------ "
+echo "wait for WLAN "
+sleep 15
+sudo ifconfig
+echo "About to start tweeter cam!"
+sleep 10
+~/refAP3repo/Stit17/Camera/wrap_call
+
 
