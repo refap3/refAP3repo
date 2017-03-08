@@ -79,7 +79,7 @@ def loop():
 		psize=frame.width*frame.height 
 		print "Photo Size: " + photo + " " + str(psize) + " w:" + str(frame.width) + " h: " + str(frame.height)
 		myDL=DrawingLayer((frame.width,frame.height))
-		myDL.setFontSize(45)
+		myDL.setFontSize(80)
 		myDL.text("Quake report from " + json["Ort"] + " with Strength of " + json["LastStrengthString"] + " at: " + json["LastOccured"] ,(10,10),color=Color.RED)
 		frame.addDrawingLayer(myDL)
 		frame.applyLayers()
