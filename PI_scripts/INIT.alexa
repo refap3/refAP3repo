@@ -1,0 +1,9 @@
+echo "INIT.alexa ----------------"
+echo "Wait NW"
+sleep 10
+ifconfig
+echo "About to start Main APP"
+sleep 10 
+~/refAP3repo/Stit17/Alexa/EQ-POST.py 
+
+
