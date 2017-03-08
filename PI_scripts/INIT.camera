@@ -1,4 +1,4 @@
-echo "INIT.camera ------------ "
+echo "INIT.camera -----------  "
 echo "wait for WLAN "
 sleep 15
 sudo ifconfig
