@@ -1,4 +1,6 @@
 echo "INIT.camera -----------  "
+echo "cleanup tmp "
+rm ~/tmp/*.jpg
 echo "wait for WLAN "
 sleep 15
 sudo ifconfig
