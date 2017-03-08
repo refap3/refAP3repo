@@ -1,0 +1,322 @@
+[
+    {
+        "id": "2f62a260.058a2e",
+        "type": "rpi-sensehat in",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "motion": true,
+        "env": false,
+        "stick": false,
+        "x": 209,
+        "y": 98,
+        "wires": [
+            [
+                "53d3d79f.955da8"
+            ]
+        ]
+    },
+    {
+        "id": "53d3d79f.955da8",
+        "type": "delay",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "5",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "x": 458,
+        "y": 139,
+        "wires": [
+            [
+                "fc550931.4879c8",
+                "4efa6d8.112da94"
+            ]
+        ]
+    },
+    {
+        "id": "fc550931.4879c8",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "splitObjectsAcc_Gyr_Ori_Com",
+        "func": "var ma = { \"payload\": msg.payload.acceleration} ;\nvar mg = { \"payload\": msg.payload.gyroscope} ;\nvar mo = { \"payload\": msg.payload.orientation} ;\nvar mc = { \"payload\": msg.payload.compass} ;\nreturn [ma, mg, mo, mc];",
+        "outputs": "4",
+        "noerr": 0,
+        "x": 761,
+        "y": 155,
+        "wires": [
+            [
+                "528b60d6.2af68"
+            ],
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "cc197aa1.862318",
+        "type": "ui_chart",
+        "z": "9a13d40c.d2c258",
+        "name": "chartAcceleration",
+        "group": "7a88679e.3fc848",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "label": "Acceleration",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "ss",
+        "interpolate": "bezier",
+        "nodata": "Sensor Hat Acceleration Sensor",
+        "ymin": "-2",
+        "ymax": "2",
+        "removeOlder": "1",
+        "removeOlderPoints": "1000",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "colors": [
+            "#1f77b4",
+            "#00ff40",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "x": 1544,
+        "y": 134,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "528b60d6.2af68",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "ChartAcceleration",
+        "func": "\nvar m1 = { \"payload\": msg.payload.x, \"topic\": \"X\" } ;\nvar m2 = { \"payload\": msg.payload.y, \"topic\": \"Y\" } ;\nvar z =msg.payload.z;\nz=z-1;\nvar m3 = { \"payload\": z, \"topic\": \"Z\" } ;\n\nreturn [m1, m2, m3];",
+        "outputs": "3",
+        "noerr": 0,
+        "x": 1178,
+        "y": 120,
+        "wires": [
+            [
+                "cc197aa1.862318"
+            ],
+            [
+                "cc197aa1.862318"
+            ],
+            [
+                "cc197aa1.862318"
+            ]
+        ]
+    },
+    {
+        "id": "c5b08883.de2d88",
+        "type": "dweetio in",
+        "z": "9a13d40c.d2c258",
+        "thing": "stit17lastQ",
+        "name": "",
+        "x": 687,
+        "y": 324,
+        "wires": [
+            [
+                "95d65e5.c92cda"
+            ]
+        ]
+    },
+    {
+        "id": "f0d8a44f.3a1718",
+        "type": "ui_gauge",
+        "z": "9a13d40c.d2c258",
+        "name": "lastQ",
+        "group": "3aed5bfb.3f8f84",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "gtype": "wave",
+        "title": "last Quake",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "20",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 1543,
+        "y": 328,
+        "wires": []
+    },
+    {
+        "id": "95d65e5.c92cda",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "lastQuake",
+        "func": "var f = parseFloat(msg.payload.stit17lastQ );\n\nmsg.payload=f ;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 965,
+        "y": 324,
+        "wires": [
+            [
+                "f0d8a44f.3a1718"
+            ]
+        ]
+    },
+    {
+        "id": "5ce29858.581ca8",
+        "type": "comment",
+        "z": "9a13d40c.d2c258",
+        "name": "only  Acceleration, lastQ and Shake Index   @ 5msg/sec",
+        "info": "",
+        "x": 864,
+        "y": 39,
+        "wires": []
+    },
+    {
+        "id": "305f05dc.00c42a",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "average",
+        "func": "var currentTime = new Date().getTime();\nif (!context.lastTime) {\n    context.lastTime = currentTime;\n    context.sum = msg.payload.value;\n    context.count = 1;\n    context.last=0;\n}\nif (currentTime-context.lastTime > 1000) {\n    // calculate average for previous messages\n    msg.payload.average = context.sum/context.count;\n    // start tracking average again\n    context.sum = msg.payload.value;\n    context.last=context.sum;\n    context.count = 1;\n    context.lastTime = currentTime;\n} else {\n    context.sum += msg.payload.value;\n    context.count +=1;\n}\nmsg.payload.average=context.last; // always return average value!\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 954,
+        "y": 242,
+        "wires": [
+            [
+                "b2e5a007.cf9a3"
+            ]
+        ]
+    },
+    {
+        "id": "dce48b2e.4dd148",
+        "type": "ui_gauge",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "group": "c870fa44.c09be8",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "Shake Index",
+        "label": "shakies",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "5",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 1521,
+        "y": 229,
+        "wires": []
+    },
+    {
+        "id": "b2e5a007.cf9a3",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "Extract AVG",
+        "func": "msg.payload=(msg.payload.average).toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1167,
+        "y": 242,
+        "wires": [
+            [
+                "dce48b2e.4dd148"
+            ]
+        ]
+    },
+    {
+        "id": "4efa6d8.112da94",
+        "type": "function",
+        "z": "9a13d40c.d2c258",
+        "name": "computeAccelerationSUM",
+        "func": "if (msg.payload.acceleration)\n    {\n    sum=(Math.pow(msg.payload.acceleration.x,2) + Math.pow(msg.payload.acceleration.y,2) + Math.pow(msg.payload.acceleration.z-1,2));\n    msg.payload.value=sum;\n    return msg;\n    }",
+        "outputs": "1",
+        "noerr": 0,
+        "x": 703,
+        "y": 238,
+        "wires": [
+            [
+                "305f05dc.00c42a"
+            ]
+        ]
+    },
+    {
+        "id": "f5658aed.9eeaa8",
+        "type": "catch",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "scope": null,
+        "x": 349,
+        "y": 50,
+        "wires": [
+            [
+                "eb015609.62adc8"
+            ]
+        ]
+    },
+    {
+        "id": "eb015609.62adc8",
+        "type": "debug",
+        "z": "9a13d40c.d2c258",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 533,
+        "y": 35,
+        "wires": []
+    },
+    {
+        "id": "7a88679e.3fc848",
+        "type": "ui_group",
+        "z": "",
+        "name": "Acceleration",
+        "tab": "17b687e3.f93fc8",
+        "order": 1,
+        "disp": false,
+        "width": "7"
+    },
+    {
+        "id": "3aed5bfb.3f8f84",
+        "type": "ui_group",
+        "z": "",
+        "name": "Last Quake",
+        "tab": "17b687e3.f93fc8",
+        "order": 3,
+        "disp": true,
+        "width": "4"
+    },
+    {
+        "id": "c870fa44.c09be8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Avg",
+        "tab": "17b687e3.f93fc8",
+        "order": 2,
+        "disp": false,
+        "width": "5"
+    },
+    {
+        "id": "17b687e3.f93fc8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Dashboard",
+        "icon": "dashboard",
+        "order": 0
+    }
+]
