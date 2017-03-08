@@ -1,0 +1,4 @@
+#!/bin/bash 
+# kill cam main procs
+pkill  wrap_call
+pkill dw-camstit17.py 
