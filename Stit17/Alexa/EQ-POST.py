@@ -23,7 +23,7 @@ def randomsparkle(sense):
     b = randint(0, 255)
     sense.set_pixel(x, y, r, g, b)
 
-def postEQ(quakstr):
+def posteq(quakstr):
     # note that the param value is encoded in url !
     url = 'https://dweet.io:443/dweet/for/stit17lastQ?stit17lastQ='+quakstr
     response = requests.post(url)
@@ -122,7 +122,7 @@ def loop():
         if quak > LIMIT:
             print "you quaked: " + quakstr
             sense.show_message(str(int(round(quak,0))))
-            postEQ(quakstr)
+            posteq(quakstr)
             dweetEQ(quakstr)
         else:
             print "NOPE only: " + quakstr
