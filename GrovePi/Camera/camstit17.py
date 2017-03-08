@@ -23,7 +23,7 @@ def setup():
 
     pinMode(buzzer_pin,"OUTPUT")
     pinMode(led,"OUTPUT")
-    pinMode(button,"OUTPUT")
+    # pinMode(button,"OUTPUT")
 
     print "Twitter Connected"
     beep(0.01)
@@ -57,9 +57,9 @@ def loop():
 		setRGB(0,128,64)
 		setRGB(0,255,0)
 		# Read distance value from Ultrasonic
-		distant = ultrasonicRead(ultrasonic_ranger)
-		button_state=digitalRead(button)
-		flushLCD('+++ ' + str(distant) + ':'  + str(trigger))
+		# distant = ultrasonicRead(ultrasonic_ranger)
+		# button_state=digitalRead(button)
+		# flushLCD('+++ ' + str(distant) + ':'  + str(trigger))
 
 		analogWrite(led,255)
 		# count down for photo !
@@ -140,13 +140,14 @@ from grove_rgb_lcd import *
 from SimpleCV import Camera, Display, DrawingLayer, Color
 
 # GrovePi connections ...
-ultrasonic_ranger = 7 #D7
+# ultrasonic_ranger = 7 #D7
 trigger = 50  # trigger distance in cm  
 buzzer_pin=2 # D2 connect buzzer here - will confirm face detected
 led=5 # D5 
-button=6 # D6 
+# button=6 # D6 
 # LCD on any I2C Port 
 
+flushLCD('Starting ...')
 
 # get the run time parameters .....
 # twitter index and hashtag ...
@@ -180,7 +181,7 @@ print twitterText3
 
 # T W I T T E R: 
 # Consumer keys and access tokens, used for OAuth  
-twa=0 # set this to 0 to use lecko account OTHERWISE itirockz is used !
+## twa=0 # set this to 0 to use lecko account OTHERWISE itirockz is used !
 #--------------------------------------------------------------------------
 if (twa==0):
     consumer_key = 'x6ZHUvQFg2MudvbA5RCNHyPrs'  
@@ -188,11 +189,11 @@ if (twa==0):
     access_token = '23412757-SSbIoMaqCuSyZRUQxp7jq1inhP7CQxYjHTQR3x1MG'  
     access_token_secret = 'Eqzrcbfose5mEn0i3TDQMwWWVnRfZZhVhaJNjMFLi0ZF1'  
 else:
-    consumer_key = 'qpsCnt3kZxKMu6H0giJaBxyzd'  
-    consumer_secret = 'yTX9WxGqX6mZYxVgSGPBCAchH4lvxaism8yBHP08uGvnOZNVBa'  
-    access_token = '1249046982-KZ8e86QyUfe9dRWmtVRTTvhUEUDReFrS1ODMfq9'  
-    access_token_secret = 'n9iyZ009L0RdRN030HtHgQiB0tsEClvOnAldzTqaV96JC'  
-    
+    consumer_key = '1IfM8lcPwisMWFYJqIhrM887p'  
+    consumer_secret = 'X2VBypa9BSthbCqy5q525TdTrIhLsehkWoUvuH4vyjMU5nhxjr'  
+    access_token = '1249046982-FXBXziqqEyAVkTBFp7AOb9kgHXfSNh2XH92RxIC'  
+    access_token_secret = 'HsaIWIJk24hhqc3omvEow7k6syZuRYaCQ1lQ5bjVUAPBZ'  
+   
 # OAuth process, using the keys and tokens  
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)  
 auth.set_access_token(access_token, access_token_secret)  
