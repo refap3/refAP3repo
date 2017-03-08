@@ -202,7 +202,7 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth) 
 
 # camera:
-myCamera=Camera(0,  {"width":1024, "height":768})
+myCamera=Camera(0,  {"width":1920, "height":1080})
 print "DONE STARTUP...................."
         
         
