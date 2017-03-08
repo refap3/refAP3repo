@@ -1,0 +1,15 @@
+
+sudo apt-get install python-opencv python-scipy python-numpy python-pip
+sudo pip install https://github.com/ingenuitas/SimpleCV/zipball/master
+# enabled camera in Raspi: 
+sudo raspi-config 
+# install UV4L
+curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | sudo apt-key add-
+# edit apt sources .. add line here in comment too !
+sudo nano /etc/apt/sources.list
+sudo apt-get update
+# last update FAILED 
+# ignored provious error and continued install ...
+sudo apt-get install uv4l-raspicam-extras
+# restart the camera service 
+sudo service uv4l_raspicam restart 
