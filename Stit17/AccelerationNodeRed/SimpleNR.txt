@@ -1,5 +1,227 @@
 [
     {
+        "id": "9a13d40c.d2c258",
+        "type": "tab",
+        "label": "Flow 1"
+    },
+    {
+        "id": "39746103.e7c26e",
+        "type": "tab",
+        "label": "Flow 2"
+    },
+    {
+        "id": "97942eec.450f4",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-dark",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "Helvetica Neue",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "Helvetica Neue",
+                "edited": true,
+                "reset": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "Helvetica Neue"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#097479",
+                    "value": "#097479",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#097479",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#000000",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#10cfd8",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#555555",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#eeeeee",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#097479",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#333333",
+                    "edited": false
+                }
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "17b687e3.f93fc8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Dashboard",
+        "icon": "dashboard",
+        "order": 0
+    },
+    {
+        "id": "7a88679e.3fc848",
+        "type": "ui_group",
+        "z": "",
+        "name": "Acceleration",
+        "tab": "17b687e3.f93fc8",
+        "order": 1,
+        "disp": false,
+        "width": "7"
+    },
+    {
+        "id": "3aed5bfb.3f8f84",
+        "type": "ui_group",
+        "z": "",
+        "name": "Last Quake",
+        "tab": "17b687e3.f93fc8",
+        "order": 3,
+        "disp": true,
+        "width": "4"
+    },
+    {
+        "id": "c870fa44.c09be8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Avg",
+        "tab": "17b687e3.f93fc8",
+        "order": 2,
+        "disp": false,
+        "width": "5"
+    },
+    {
+        "id": "ca75328d.435d1",
+        "type": "inject",
+        "z": "39746103.e7c26e",
+        "name": "Trigger every x minutes",
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "repeat": "1800",
+        "crontab": "",
+        "once": true,
+        "x": 208,
+        "y": 200,
+        "wires": [
+            [
+                "d67a5990.9da148"
+            ]
+        ]
+    },
+    {
+        "id": "99875668.700fe8",
+        "type": "debug",
+        "z": "39746103.e7c26e",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 906,
+        "y": 115,
+        "wires": []
+    },
+    {
+        "id": "de429943.e87298",
+        "type": "dweetio out",
+        "z": "39746103.e7c26e",
+        "thing": "stit17IP",
+        "name": "",
+        "x": 869,
+        "y": 216,
+        "wires": []
+    },
+    {
+        "id": "a8523df7.d188c",
+        "type": "dweetio in",
+        "z": "39746103.e7c26e",
+        "thing": "sti17IP",
+        "name": "",
+        "x": 168,
+        "y": 400,
+        "wires": [
+            [
+                "cd4da65.47afa58"
+            ]
+        ]
+    },
+    {
+        "id": "cd4da65.47afa58",
+        "type": "debug",
+        "z": "39746103.e7c26e",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 416,
+        "y": 397,
+        "wires": []
+    },
+    {
+        "id": "d67a5990.9da148",
+        "type": "exec",
+        "z": "39746103.e7c26e",
+        "command": "echo \"eth0: \"`/sbin/ifconfig eth0 | /bin/grep \"inet addr\" | /usr/bin/cut -d \":\" -f 2 | /usr/bin/cut -d \" \" -f 1`\" wlan0: \"`/sbin/ifconfig wlan0 | /bin/grep \"inet addr\" | /usr/bin/cut -d \":\" -f 2 | /usr/bin/cut -d \" \" -f 1`",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "getIP(s)",
+        "x": 564,
+        "y": 119,
+        "wires": [
+            [
+                "99875668.700fe8",
+                "de429943.e87298"
+            ],
+            [],
+            []
+        ]
+    },
+    {
         "id": "2f62a260.058a2e",
         "type": "rpi-sensehat in",
         "z": "9a13d40c.d2c258",
@@ -162,7 +384,7 @@
         "type": "function",
         "z": "9a13d40c.d2c258",
         "name": "lastQuake",
-        "func": "var f = parseFloat(msg.payload.stit17lastQ );\n\nmsg.payload=f ;\nreturn msg;",
+        "func": "var f = parseFloat(msg.payload.stit17lastQ.replace(',','.') );\n\nmsg.payload=f ;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "x": 965,
@@ -280,43 +502,5 @@
         "x": 533,
         "y": 35,
         "wires": []
-    },
-    {
-        "id": "7a88679e.3fc848",
-        "type": "ui_group",
-        "z": "",
-        "name": "Acceleration",
-        "tab": "17b687e3.f93fc8",
-        "order": 1,
-        "disp": false,
-        "width": "7"
-    },
-    {
-        "id": "3aed5bfb.3f8f84",
-        "type": "ui_group",
-        "z": "",
-        "name": "Last Quake",
-        "tab": "17b687e3.f93fc8",
-        "order": 3,
-        "disp": true,
-        "width": "4"
-    },
-    {
-        "id": "c870fa44.c09be8",
-        "type": "ui_group",
-        "z": "",
-        "name": "Avg",
-        "tab": "17b687e3.f93fc8",
-        "order": 2,
-        "disp": false,
-        "width": "5"
-    },
-    {
-        "id": "17b687e3.f93fc8",
-        "type": "ui_tab",
-        "z": "",
-        "name": "Dashboard",
-        "icon": "dashboard",
-        "order": 0
     }
 ]
