@@ -1,0 +1,5 @@
+#!/bin/bash  
+cp ~/refAP3repo/PI_scripts/INIT.camera ~/INIT.local
+cat ~/INIT.local
+ 
+ 

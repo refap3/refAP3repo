@@ -16,9 +16,11 @@ echo "unsure if this will ever work -- revert to inited version of noobs"
 
  sudo systemctl enable nodered.service
   
- cp ~/refAP3repo/PI_scripts/.bash_aliases ~/
- cp ~/refAP3repo/PI_scripts/.bashrc ~/
- cp ~/refAP3repo/PI_scripts/INIT.* ~/
+cp ~/refAP3repo/PI_scripts/.bash_aliases ~/
+cp ~/refAP3repo/PI_scripts/upd* ~/
+cp ~/refAP3repo/PI_scripts/.bashrc ~/
+cp ~/refAP3repo/PI_scripts/INIT.* ~/
+cp ~/refAP3repo/PI_scripts/MAKE* ~/
  
  
  

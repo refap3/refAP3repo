@@ -1,0 +1,8 @@
+#!/bin/bash  
+cp ~/refAP3repo/PI_scripts/.bash_aliases ~/
+cp ~/refAP3repo/PI_scripts/upd* ~/
+cp ~/refAP3repo/PI_scripts/.bashrc ~/
+cp ~/refAP3repo/PI_scripts/INIT.* ~/
+cp ~/refAP3repo/PI_scripts/MAKE* ~/
+ 
+ 
