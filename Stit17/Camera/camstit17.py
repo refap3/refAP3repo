@@ -91,7 +91,7 @@ def loop():
 		beep(0.2)
 
 		time.sleep(1) # wait save complete ...
-		status = twitterText1 + ' ' + hashtag + ' ' + twitterText2 + ' ' + ' @:' + now + ' ' + twitterText3 + ' '
+		status = twitterText1 + ' ' + hashtag + ' ' + twitterText2 + ' ' + json["Ort"] + ' @:' + now + ' ' + twitterText3 + ' ' + json["Name"]
 		# tweet ...
 		api.update_with_media(photo, status=status)
 		logLCD('TWEETed!')
