@@ -26,7 +26,7 @@ def randomsparkle(sense):
 
 def questionm(sense):
     X = [255, 0, 0]  # Red
-    O = [255, 255, 255]  # White
+    O = [0, 0, 0]  # black
 
     question_mark = [
         O, O, O, X, X, O, O, O,
@@ -160,7 +160,7 @@ def loop():
             questionm(sense)
             time.sleep(xsecs)
             # BLANK screen for 1 secs ...
-            pixels = [BLUE for i in range(64)]
+            pixels = [BLACK for i in range(64)]
             sense.set_pixels(pixels)
             time.sleep(xsecs)
 
