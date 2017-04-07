@@ -1,0 +1,325 @@
+[
+    {
+        "id": "33599f7f.27959",
+        "type": "tab",
+        "label": "Google Travel Time Calculator"
+    },
+    {
+        "id": "1e019bd9.6a6174",
+        "type": "inject",
+        "z": "33599f7f.27959",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "*/1 0 * * *",
+        "once": false,
+        "x": 136,
+        "y": 61,
+        "wires": [
+            [
+                "444ef0dd.e66ec"
+            ]
+        ]
+    },
+    {
+        "id": "3aaacad6.ed3f56",
+        "type": "rpi-sensehat out",
+        "z": "33599f7f.27959",
+        "name": "",
+        "x": 1138,
+        "y": 105,
+        "wires": []
+    },
+    {
+        "id": "8e45e31f.9f6dc",
+        "type": "http request",
+        "z": "33599f7f.27959",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 895,
+        "y": 283,
+        "wires": [
+            [
+                "a204aaf4.e11358",
+                "1ecb5b1f.c4d285"
+            ]
+        ]
+    },
+    {
+        "id": "a204aaf4.e11358",
+        "type": "function",
+        "z": "33599f7f.27959",
+        "name": "extract and format duration values",
+        "func": "\nda=(msg.payload.destination_addresses[0]).split(',')[0];\noa=(msg.payload.origin_addresses[0]).split(',')[0];\n\nitv=(msg.payload.rows[0].elements[0].duration_in_traffic.value)\nduv=(msg.payload.rows[0].elements[0].duration.value)\n\nminutes= Math.round(itv/60);\nh = Math.floor(minutes / 60);\nm = minutes % 60;\n//h = h < 10 ? '0' + h : h;\nm = m < 10 ? '0' + m : m;\n\nvar m = {\"payload\": h + ':' + m + ' ' + oa + ' to ' + da }; \nm.color=\"green\";\nif (duv*1.1 < itv) m.color=\"red\";\nreturn m  ;\n\n",
+        "outputs": "1",
+        "noerr": 0,
+        "x": 1120,
+        "y": 422,
+        "wires": [
+            [
+                "3aaacad6.ed3f56"
+            ]
+        ]
+    },
+    {
+        "id": "944d9d21.a5171",
+        "type": "rpi-sensehat in",
+        "z": "33599f7f.27959",
+        "name": "",
+        "motion": false,
+        "env": false,
+        "stick": true,
+        "x": 130,
+        "y": 350,
+        "wires": [
+            [
+                "444ef0dd.e66ec"
+            ]
+        ]
+    },
+    {
+        "id": "4c562e0f.80089",
+        "type": "function",
+        "z": "33599f7f.27959",
+        "name": "Create Request URL",
+        "func": "\nmsg.url=\"https://maps.googleapis.com/maps/api/distancematrix/json?departure_time=now&origins=\" + msg.origins + \"&destinations=\" + msg.destinations + \"&key=\" + msg.key ;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 699,
+        "y": 125,
+        "wires": [
+            [
+                "8e45e31f.9f6dc"
+            ]
+        ]
+    },
+    {
+        "id": "ede9a774.f4baa8",
+        "type": "function",
+        "z": "33599f7f.27959",
+        "name": "Get API Key",
+        "func": "msg.key=\"<your API key here>\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 580,
+        "y": 270,
+        "wires": [
+            [
+                "4c562e0f.80089"
+            ]
+        ]
+    },
+    {
+        "id": "444ef0dd.e66ec",
+        "type": "function",
+        "z": "33599f7f.27959",
+        "name": "Get Locations",
+        "func": "msg.origins=\"Eisenstadt,AT\";\nmsg.destinations=\"Vienna,AT\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 344,
+        "y": 178,
+        "wires": [
+            [
+                "ede9a774.f4baa8"
+            ]
+        ]
+    },
+    {
+        "id": "eaa8c0a3.99e41",
+        "type": "dweetio in",
+        "z": "33599f7f.27959",
+        "thing": "TTim",
+        "name": "Get Ttim from dweet.io",
+        "x": 121,
+        "y": 496,
+        "wires": [
+            [
+                "8944d74a.ec52f8"
+            ]
+        ]
+    },
+    {
+        "id": "8944d74a.ec52f8",
+        "type": "function",
+        "z": "33599f7f.27959",
+        "name": "Get Locations from Dweet",
+        "func": "msg.origins=msg.payload.origins;\nmsg.destinations=msg.payload.destinations;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 448,
+        "y": 429,
+        "wires": [
+            [
+                "ede9a774.f4baa8"
+            ]
+        ]
+    },
+    {
+        "id": "aafd0611.027078",
+        "type": "dweetio out",
+        "z": "33599f7f.27959",
+        "thing": "TTim",
+        "name": "send  TTim to dweet.io",
+        "x": 638.5,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "1d1a8338.384ffd",
+        "type": "function",
+        "z": "33599f7f.27959",
+        "name": "Set Test Location ",
+        "func": "msg.payload={\"origins\":  \"Eisenstadt,AT\" , \"destinations\" :\"Vienna\" };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 414,
+        "y": 622,
+        "wires": [
+            [
+                "aafd0611.027078"
+            ]
+        ]
+    },
+    {
+        "id": "adacf46a.e668a8",
+        "type": "inject",
+        "z": "33599f7f.27959",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 137,
+        "y": 655,
+        "wires": [
+            [
+                "1d1a8338.384ffd"
+            ]
+        ]
+    },
+    {
+        "id": "3641fb01.6e6264",
+        "type": "ui_form",
+        "z": "33599f7f.27959",
+        "name": "",
+        "label": "Calculator Form",
+        "group": "fbe7267a.816518",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "From",
+                "value": "origins",
+                "type": "text",
+                "required": true
+            },
+            {
+                "label": "To",
+                "value": "destinations",
+                "type": "text",
+                "required": true
+            }
+        ],
+        "formValue": {
+            "origins": "",
+            "destinations": ""
+        },
+        "payload": "",
+        "topic": "",
+        "x": 289,
+        "y": 748,
+        "wires": [
+            [
+                "aafd0611.027078"
+            ]
+        ]
+    },
+    {
+        "id": "102da6be.4c9499",
+        "type": "comment",
+        "z": "33599f7f.27959",
+        "name": "Calculate Travel Time via Google API",
+        "info": "",
+        "x": 566,
+        "y": 36,
+        "wires": []
+    },
+    {
+        "id": "9bd0e112.1c873",
+        "type": "comment",
+        "z": "33599f7f.27959",
+        "name": "1. via Trigger HERE",
+        "info": "",
+        "x": 118,
+        "y": 109,
+        "wires": []
+    },
+    {
+        "id": "f69df1fc.0c0c6",
+        "type": "comment",
+        "z": "33599f7f.27959",
+        "name": "2. via Sense Hat Joy Stick",
+        "info": "",
+        "x": 133,
+        "y": 402,
+        "wires": []
+    },
+    {
+        "id": "bbcf5888.c91618",
+        "type": "comment",
+        "z": "33599f7f.27959",
+        "name": "3. from Dweet.io (TTim thing:  {\"origins\":  \"Eisenstadt\" , \"destinations\" :\" Vienna\" } )",
+        "info": "",
+        "x": 306,
+        "y": 536,
+        "wires": []
+    },
+    {
+        "id": "5ddb0957.ef4998",
+        "type": "comment",
+        "z": "33599f7f.27959",
+        "name": "4. via Form UI",
+        "info": "",
+        "x": 277,
+        "y": 789,
+        "wires": []
+    },
+    {
+        "id": "1ecb5b1f.c4d285",
+        "type": "debug",
+        "z": "33599f7f.27959",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 965,
+        "y": 49,
+        "wires": []
+    },
+    {
+        "id": "fbe7267a.816518",
+        "type": "ui_group",
+        "z": "",
+        "name": "TTim",
+        "tab": "d83f769b.5be0c8",
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "d83f769b.5be0c8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Dashboard",
+        "icon": "dashboard",
+        "order": 0
+    }
+]
