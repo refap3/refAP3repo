@@ -1,13 +1,13 @@
 [
     {
-        "id": "33599f7f.27959",
+        "id": "61380d19.2433d4",
         "type": "tab",
         "label": "Google Travel Time Calculator"
     },
     {
-        "id": "1e019bd9.6a6174",
+        "id": "b29f819e.97e3d",
         "type": "inject",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "",
         "topic": "",
         "payload": "",
@@ -19,23 +19,23 @@
         "y": 61,
         "wires": [
             [
-                "444ef0dd.e66ec"
+                "67f097a6.f4c748"
             ]
         ]
     },
     {
-        "id": "3aaacad6.ed3f56",
+        "id": "6be17a4e.a47664",
         "type": "rpi-sensehat out",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "",
         "x": 1138,
         "y": 105,
         "wires": []
     },
     {
-        "id": "8e45e31f.9f6dc",
+        "id": "5f4f4144.8591b",
         "type": "http request",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "",
         "method": "GET",
         "ret": "obj",
@@ -45,15 +45,15 @@
         "y": 283,
         "wires": [
             [
-                "a204aaf4.e11358",
-                "1ecb5b1f.c4d285"
+                "fbfbd1d4.0caa1",
+                "339a688c.5a9c58"
             ]
         ]
     },
     {
-        "id": "a204aaf4.e11358",
+        "id": "fbfbd1d4.0caa1",
         "type": "function",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "extract and format duration values",
         "func": "\nda=(msg.payload.destination_addresses[0]).split(',')[0];\noa=(msg.payload.origin_addresses[0]).split(',')[0];\n\nitv=(msg.payload.rows[0].elements[0].duration_in_traffic.value)\nduv=(msg.payload.rows[0].elements[0].duration.value)\n\nminutes= Math.round(itv/60);\nh = Math.floor(minutes / 60);\nm = minutes % 60;\n//h = h < 10 ? '0' + h : h;\nm = m < 10 ? '0' + m : m;\n\nvar m = {\"payload\": h + ':' + m + ' ' + oa + ' to ' + da }; \nm.color=\"green\";\nif (duv*1.1 < itv) m.color=\"red\";\nreturn m  ;\n\n",
         "outputs": "1",
@@ -62,14 +62,14 @@
         "y": 422,
         "wires": [
             [
-                "3aaacad6.ed3f56"
+                "6be17a4e.a47664"
             ]
         ]
     },
     {
-        "id": "944d9d21.a5171",
+        "id": "534fc4a3.9427bc",
         "type": "rpi-sensehat in",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "",
         "motion": false,
         "env": false,
@@ -78,14 +78,14 @@
         "y": 350,
         "wires": [
             [
-                "444ef0dd.e66ec"
+                "67f097a6.f4c748"
             ]
         ]
     },
     {
-        "id": "4c562e0f.80089",
+        "id": "27df2129.b3047e",
         "type": "function",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "Create Request URL",
         "func": "\nmsg.url=\"https://maps.googleapis.com/maps/api/distancematrix/json?departure_time=now&origins=\" + msg.origins + \"&destinations=\" + msg.destinations + \"&key=\" + msg.key ;\n\nreturn msg;",
         "outputs": 1,
@@ -94,14 +94,14 @@
         "y": 125,
         "wires": [
             [
-                "8e45e31f.9f6dc"
+                "5f4f4144.8591b"
             ]
         ]
     },
     {
-        "id": "ede9a774.f4baa8",
+        "id": "b7463dc2.a3ea",
         "type": "function",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "Get API Key",
         "func": "msg.key=\"<your API key here>\";\nreturn msg;",
         "outputs": 1,
@@ -110,14 +110,14 @@
         "y": 270,
         "wires": [
             [
-                "4c562e0f.80089"
+                "27df2129.b3047e"
             ]
         ]
     },
     {
-        "id": "444ef0dd.e66ec",
+        "id": "67f097a6.f4c748",
         "type": "function",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "Get Locations",
         "func": "msg.origins=\"Eisenstadt,AT\";\nmsg.destinations=\"Vienna,AT\";\nreturn msg;",
         "outputs": 1,
@@ -126,28 +126,28 @@
         "y": 178,
         "wires": [
             [
-                "ede9a774.f4baa8"
+                "b7463dc2.a3ea"
             ]
         ]
     },
     {
-        "id": "eaa8c0a3.99e41",
+        "id": "5daa629b.10bf2c",
         "type": "dweetio in",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "thing": "TTim",
         "name": "Get Ttim from dweet.io",
         "x": 121,
         "y": 496,
         "wires": [
             [
-                "8944d74a.ec52f8"
+                "96d22a3e.5b0078"
             ]
         ]
     },
     {
-        "id": "8944d74a.ec52f8",
+        "id": "96d22a3e.5b0078",
         "type": "function",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "Get Locations from Dweet",
         "func": "msg.origins=msg.payload.origins;\nmsg.destinations=msg.payload.destinations;\nreturn msg;",
         "outputs": 1,
@@ -156,14 +156,14 @@
         "y": 429,
         "wires": [
             [
-                "ede9a774.f4baa8"
+                "b7463dc2.a3ea"
             ]
         ]
     },
     {
-        "id": "aafd0611.027078",
+        "id": "836e7863.252cd8",
         "type": "dweetio out",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "thing": "TTim",
         "name": "send  TTim to dweet.io",
         "x": 638.5,
@@ -171,9 +171,9 @@
         "wires": []
     },
     {
-        "id": "1d1a8338.384ffd",
+        "id": "5999b4ea.e6679c",
         "type": "function",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "Set Test Location ",
         "func": "msg.payload={\"origins\":  \"Eisenstadt,AT\" , \"destinations\" :\"Vienna\" };\nreturn msg;",
         "outputs": 1,
@@ -182,14 +182,14 @@
         "y": 622,
         "wires": [
             [
-                "aafd0611.027078"
+                "836e7863.252cd8"
             ]
         ]
     },
     {
-        "id": "adacf46a.e668a8",
+        "id": "77674d49.93a794",
         "type": "inject",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "",
         "topic": "",
         "payload": "",
@@ -201,14 +201,14 @@
         "y": 655,
         "wires": [
             [
-                "1d1a8338.384ffd"
+                "5999b4ea.e6679c"
             ]
         ]
     },
     {
-        "id": "3641fb01.6e6264",
+        "id": "ac6c032a.20d4a",
         "type": "ui_form",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "",
         "label": "Calculator Form",
         "group": "fbe7267a.816518",
@@ -239,14 +239,14 @@
         "y": 748,
         "wires": [
             [
-                "aafd0611.027078"
+                "836e7863.252cd8"
             ]
         ]
     },
     {
-        "id": "102da6be.4c9499",
+        "id": "31618008.277db",
         "type": "comment",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "Calculate Travel Time via Google API",
         "info": "",
         "x": 566,
@@ -254,9 +254,9 @@
         "wires": []
     },
     {
-        "id": "9bd0e112.1c873",
+        "id": "dc5e5a8c.93c818",
         "type": "comment",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "1. via Trigger HERE",
         "info": "",
         "x": 118,
@@ -264,9 +264,9 @@
         "wires": []
     },
     {
-        "id": "f69df1fc.0c0c6",
+        "id": "2da0aaf7.e07c56",
         "type": "comment",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "2. via Sense Hat Joy Stick",
         "info": "",
         "x": 133,
@@ -274,9 +274,9 @@
         "wires": []
     },
     {
-        "id": "bbcf5888.c91618",
+        "id": "a30970a2.b9ec7",
         "type": "comment",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "3. from Dweet.io (TTim thing:  {\"origins\":  \"Eisenstadt\" , \"destinations\" :\" Vienna\" } )",
         "info": "",
         "x": 306,
@@ -284,9 +284,9 @@
         "wires": []
     },
     {
-        "id": "5ddb0957.ef4998",
+        "id": "2a2fb897.eb1ee8",
         "type": "comment",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "4. via Form UI",
         "info": "",
         "x": 277,
@@ -294,15 +294,25 @@
         "wires": []
     },
     {
-        "id": "1ecb5b1f.c4d285",
+        "id": "339a688c.5a9c58",
         "type": "debug",
-        "z": "33599f7f.27959",
+        "z": "61380d19.2433d4",
         "name": "",
         "active": true,
         "console": "false",
         "complete": "false",
         "x": 965,
         "y": 49,
+        "wires": []
+    },
+    {
+        "id": "eedfe64a.102018",
+        "type": "comment",
+        "z": "61380d19.2433d4",
+        "name": "enter YOUR API key here!",
+        "info": "",
+        "x": 631,
+        "y": 308,
         "wires": []
     },
     {
