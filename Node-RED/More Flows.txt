@@ -1,13 +1,16 @@
-1. Get Tip of the Day 
+1. Get Tip of the Day (requires Azure Web Service running!)
 ------------------------------------
+
 [{"id":"8f82fd7b.73f","type":"ui_text","z":"1b4c02e0.db1a3d","group":"fb7f2f6b.3fc14","order":0,"width":"4","height":"5","name":"","label":"","format":"{{msg.payload}}","layout":"col-center","x":608,"y":62,"wires":[]},{"id":"97d0d1af.a3618","type":"ui_button","z":"1b4c02e0.db1a3d","name":"","group":"fb7f2f6b.3fc14","order":0,"width":0,"height":0,"label":"Get it!","color":"","bgcolor":"","icon":"","payload":"","payloadType":"str","topic":"","x":190,"y":132,"wires":[["a7638ac7.f70208"]]},{"id":"a7638ac7.f70208","type":"http request","z":"1b4c02e0.db1a3d","name":"","method":"GET","ret":"txt","url":"http://stit17.azurewebsites.net:80/api/alexa/hta","tls":"","x":344,"y":183,"wires":[["bf9f758e.6dfcd8"]]},{"id":"bf9f758e.6dfcd8","type":"json","z":"1b4c02e0.db1a3d","name":"","x":455,"y":323,"wires":[["aced8578.8c7448"]]},{"id":"aced8578.8c7448","type":"function","z":"1b4c02e0.db1a3d","name":"","func":"msg.payload=msg.payload.Tip;\nreturn msg;","outputs":1,"noerr":0,"x":545,"y":417,"wires":[["8f82fd7b.73f"]]},{"id":"fb7f2f6b.3fc14","type":"ui_group","z":"","name":"Tip of the Day","tab":"45bfac02.9a83b4","order":null,"disp":true,"width":"6"},{"id":"45bfac02.9a83b4","type":"ui_tab","name":"Tab","icon":"dashboard","order":0}]
 
 
-2. Get Tip every 5 secs and post to dweet.io
-------------------------------------
+2. Get Tip every 5 secs and post to dweet.io ("Send tip to another (one or MANY) consumer")
+-----------------------------------------------------------------------------------------------
+
 [{"id":"20d2380.5f032c8","type":"http request","z":"4d21f1f2.e8ac3","name":"","method":"GET","ret":"txt","url":"http://stit17.azurewebsites.net:80/api/alexa/hta","tls":"","x":301,"y":66,"wires":[["f01adab2.a95f98"]]},{"id":"f01adab2.a95f98","type":"json","z":"4d21f1f2.e8ac3","name":"","x":412,"y":206,"wires":[["9e5bc05f.1a11e"]]},{"id":"9e5bc05f.1a11e","type":"function","z":"4d21f1f2.e8ac3","name":"","func":"msg.payload=msg.payload.Tip;\nreturn msg;","outputs":1,"noerr":0,"x":502,"y":300,"wires":[["ccb4a042.14ade"]]},{"id":"ccb4a042.14ade","type":"dweetio out","z":"4d21f1f2.e8ac3","thing":"HTA","name":"","x":618,"y":383,"wires":[]},{"id":"88dbed90.66b12","type":"inject","z":"4d21f1f2.e8ac3","name":"","topic":"","payload":"","payloadType":"date","repeat":"5","crontab":"","once":true,"x":103,"y":39,"wires":[["20d2380.5f032c8"]]}]
 
 
 3. on **another** Host receive dweeted Tips
-------------------------------------
+---------------------------------------------------
+
 [{"id":"668dd14c.722b9","type":"ui_text","z":"8a1735dd.5c49f8","group":"fb7f2f6b.3fc14","order":0,"width":"4","height":"5","name":"","label":"","format":"{{msg.payload}}","layout":"col-center","x":473,"y":109,"wires":[]},{"id":"f80975ac.623d88","type":"dweetio in","z":"8a1735dd.5c49f8","thing":"HTA","name":"","x":219,"y":65,"wires":[["668dd14c.722b9"]]},{"id":"fb7f2f6b.3fc14","type":"ui_group","z":"","name":"Tip of the Day","tab":"45bfac02.9a83b4","order":null,"disp":true,"width":"6"},{"id":"45bfac02.9a83b4","type":"ui_tab","name":"Tab","icon":"dashboard","order":0}]
