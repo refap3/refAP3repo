@@ -10,7 +10,7 @@ def setup():
     GPIO.output(RelayPin, GPIO.HIGH)
  
 def loop():
-    sleepTime=0.2
+    sleepTime=3
     while True:
         print '...relayd on'
         GPIO.output(RelayPin, GPIO.LOW)
