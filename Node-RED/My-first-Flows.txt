@@ -12,6 +12,41 @@ Revised 2nd flow
 
 [{"id":"4b904ac1.7b3d14","type":"inject","z":"6a7ee47e.a033ec","name":"","topic":"","payload":"","payloadType":"date","repeat":"","crontab":"","once":false,"x":120,"y":65,"wires":[["33abd9ee.74ec16"]]},{"id":"33abd9ee.74ec16","type":"http request","z":"6a7ee47e.a033ec","name":"","method":"GET","ret":"txt","url":"http://grid.iamkate.com/","tls":"","x":190,"y":240,"wires":[["cb9d0a39.765308"]]},{"id":"cb9d0a39.765308","type":"function","z":"6a7ee47e.a033ec","name":"parse","func":"// does a simple text extract parse of the http output \n\nmsg1 = {};\nmsg2 = {};\nmsg3 = {};\n\nvar brown = msg.payload.split('<div class=\"box\" id=\"brownEnergy\">')[1].split('<h2>')[1].split('</h2>')[0];\nvar green = msg.payload.split('<div class=\"box\" id=\"greenEnergy\">')[1].split('<h2>')[1].split('</h2>')[0];\nvar other = msg.payload.split('<div class=\"box\" id=\"otherEnergy\">')[1].split('<h2>')[1].split('</h2>')[0];\n\nmsg1.payload = brown;\nmsg2.payload = green;\nmsg3.payload = other;\n\nreturn [msg1,msg2,msg3];\n\n","outputs":3,"noerr":0,"x":303,"y":319,"wires":[["add4648f.b7f218"],["862e814c.13717"],["aa2d8953.6b0a48"]]},{"id":"42e8cd49.7b8104","type":"comment","z":"6a7ee47e.a033ec","name":"My 2nd Flow revised 2018","info":"","x":416,"y":112,"wires":[]},{"id":"add4648f.b7f218","type":"debug","z":"6a7ee47e.a033ec","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"payload","x":496,"y":264,"wires":[]},{"id":"862e814c.13717","type":"debug","z":"6a7ee47e.a033ec","name":"","active":true,"console":"false","complete":"false","x":486,"y":359,"wires":[]},{"id":"aa2d8953.6b0a48","type":"debug","z":"6a7ee47e.a033ec","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"false","x":500,"y":440,"wires":[]}]
 
+
+Dashboard example random numbers ...
+------------------------------------------
+
+
+[{"id":"f660cb7a.63e5b8","type":"ui_chart","z":"7c308710.791958","name":"","group":"7f741f6c.8f16b","order":0,"width":0,"height":0,"label":"chart","chartType":"line","legend":"false","xformat":"HH:mm","interpolate":"bezier","nodata":"","dot":false,"ymin":"","ymax":"","removeOlder":"2","removeOlderPoints":"","removeOlderUnit":"60","cutout":0,"useOneColor":false,"colors":["#1f77b4","#aec7e8","#ff7f0e","#2ca02c","#98df8a","#d62728","#ff9896","#9467bd","#c5b0d5"],"useOldStyle":false,"x":600,"y":260,"wires":[[],[]]},{"id":"93345a5b.a4d9c8","type":"inject","z":"7c308710.791958","name":"","topic":"","payload":"","payloadType":"date","repeat":"1","crontab":"","once":false,"onceDelay":0.1,"x":250,"y":160,"wires":[["517e77f.bc59788"]]},{"id":"517e77f.bc59788","type":"function","z":"7c308710.791958","name":"","func":"msg.payload=Math.round(Math.random()*100);\nreturn msg;","outputs":1,"noerr":0,"x":440,"y":220,"wires":[["f660cb7a.63e5b8","530e796d.532f08"]]},{"id":"530e796d.532f08","type":"ui_gauge","z":"7c308710.791958","name":"","group":"7f741f6c.8f16b","order":0,"width":0,"height":0,"gtype":"gage","title":"Gauge","label":"units","format":"{{value}}","min":0,"max":"100","colors":["#00b500","#e6e600","#ca3838"],"seg1":"","seg2":"","x":560,"y":420,"wires":[]},{"id":"7f741f6c.8f16b","type":"ui_group","z":"","name":"Charts","tab":"ecf5db7f.7b22d8","disp":true,"width":"6","collapse":false},{"id":"ecf5db7f.7b22d8","type":"ui_tab","z":"","name":"Data","icon":"dashboard","order":0}]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 My 3rd Flow
 --------------------------------------
 [{"id":"18b7a22f.2f2e7e","type":"tab","label":"My 3rd Flow"},{"id":"e1a90154.ad674","type":"http request","z":"18b7a22f.2f2e7e","name":"","method":"GET","ret":"txt","url":"http://realtimeweb-prod.nationalgrid.com/SystemData.aspx","tls":"","x":477,"y":258,"wires":[["fe1b7e24.ddff2"]]},{"id":"d00e481b.052668","type":"inject","z":"18b7a22f.2f2e7e","name":"","topic":"","payload":"","payloadType":"date","repeat":"5","crontab":"","once":false,"x":436,"y":145,"wires":[["e1a90154.ad674"]]},{"id":"fe1b7e24.ddff2","type":"function","z":"18b7a22f.2f2e7e","name":"parse","func":"// does a simple text extract parse of the http output to provide an\n// object containing the uk power demand, frequency and time\n\nif (~msg.payload.indexOf('<span')) {\n    var dem = msg.payload.split('Demand:')[1].split(\"MW\")[0];\n    var fre = msg.payload.split('Frequency:')[1].split(\"Hz\")[0];\n\n    msg1 = {};\n    msg2 = {};\n\n    msg1.payload = parseInt(dem.split(\">\")[1].split(\"<\")[0]);\n    msg2.payload = parseFloat(fre.split(\">\")[1].split(\"<\")[0]);\n\n\n    return [msg1,msg2];\n}\nreturn null;","outputs":"2","noerr":0,"x":609,"y":399,"wires":[["4e71889.5e17b78","80ef59d4.0ac348"],["cd199af2.c78aa8","d7d01dea.9b3cd"]]},{"id":"bb327cee.93ce6","type":"comment","z":"18b7a22f.2f2e7e","name":"My 3rd Flow","info":"","x":682,"y":192,"wires":[]},{"id":"4e71889.5e17b78","type":"debug","z":"18b7a22f.2f2e7e","name":"","active":true,"console":"false","complete":"false","x":802,"y":344,"wires":[]},{"id":"cd199af2.c78aa8","type":"debug","z":"18b7a22f.2f2e7e","name":"","active":true,"console":"false","complete":"false","x":792,"y":439,"wires":[]},{"id":"80ef59d4.0ac348","type":"ui_gauge","z":"18b7a22f.2f2e7e","name":"","group":"4fe3f3cf.343bdc","order":0,"width":0,"height":0,"gtype":"gage","title":"Gauge","label":"MW","format":"{{value}}","min":"30000","max":"50000","colors":["#00b500","#e6e600","#ca3838"],"x":886,"y":209,"wires":[]},{"id":"d7d01dea.9b3cd","type":"ui_text","z":"18b7a22f.2f2e7e","group":"4fe3f3cf.343bdc","order":0,"width":0,"height":0,"name":"","label":"Hz","format":"{{msg.payload}}","layout":"col-center","x":888,"y":265,"wires":[]},{"id":"4fe3f3cf.343bdc","type":"ui_group","z":"","name":"Power @UK","tab":"d83f769b.5be0c8","disp":true,"width":"6"},{"id":"d83f769b.5be0c8","type":"ui_tab","z":"","name":"Dashboard","icon":"dashboard","order":0}]
